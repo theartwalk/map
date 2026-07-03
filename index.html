@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VW42KRS81Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-VW42KRS81Z');
+</script>
+<title>Artsy Places — Delhi Art Galleries</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--cream:#F7F3EC;--dark:#1C1710;--accent:#C4622D;--muted:#9A8E7E;--card:#fff;--border:#EAE4D8;}
+html,body{height:100%;width:100%;overflow:hidden;}
+body{font-family:'DM Sans',sans-serif;color:var(--dark);display:flex;flex-direction:column;background:var(--cream);}
+.topbar{background:var(--dark);padding:10px 14px;display:flex;align-items:center;gap:10px;z-index:500;flex-shrink:0;}
+.logo{font-family:'Playfair Display',serif;font-size:18px;color:#fff;white-space:nowrap;}
+.logo span{color:var(--accent);}
+.search-wrap{flex:1;position:relative;}
+.search-wrap input{width:100%;padding:9px 12px 9px 34px;border-radius:10px;border:none;background:rgba(255,255,255,0.12);color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;}
+.search-wrap input::placeholder{color:rgba(255,255,255,0.38);}
+.search-wrap input:focus{background:rgba(255,255,255,0.18);}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;opacity:.5;}
+.loc-btn{width:38px;height:38px;border-radius:10px;border:none;background:rgba(255,255,255,0.12);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s;}
+.loc-btn:active,.loc-btn.active{background:var(--accent);}
+.filters{display:flex;gap:6px;padding:8px 14px;overflow-x:auto;flex-shrink:0;background:var(--dark);scrollbar-width:none;}
+.filters::-webkit-scrollbar{display:none;}
+.fpill{padding:5px 13px;border-radius:20px;border:1px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.55);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0;}
+.fpill.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+#map{flex:1;z-index:1;min-height:0;}
+.sheet{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-radius:20px 20px 0 0;box-shadow:0 -4px 30px rgba(0,0,0,0.15);z-index:400;transition:transform .35s cubic-bezier(.4,0,.2,1);max-height:82vh;display:flex;flex-direction:column;}
+.sheet.collapsed{transform:translateY(calc(100% - 70px));}
+.sheet.half{transform:translateY(40%);}
+.sheet.full{transform:translateY(0);}
+.sheet-handle-row{padding:10px 0 6px;display:flex;flex-direction:column;align-items:center;cursor:pointer;flex-shrink:0;}
+.handle{width:40px;height:4px;background:var(--border);border-radius:4px;}
+.sheet-title-row{display:flex;align-items:center;justify-content:space-between;padding:0 16px 8px;flex-shrink:0;}
+.sheet-title{font-family:'Playfair Display',serif;font-size:16px;}
+.count-pill{background:var(--accent);color:#fff;font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;}
+.nearby-note{font-size:11px;color:var(--muted);padding:0 16px 8px;flex-shrink:0;}
+.glist{flex:1;overflow-y:auto;padding:0 12px 12px;min-height:0;scrollbar-width:none;}
+.glist::-webkit-scrollbar{display:none;}
+.gcard{background:#fff;border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:border-color .2s;display:flex;align-items:center;gap:12px;}
+.gcard:active,.gcard.active{border-color:var(--accent);}
+.gcard-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;border:2px solid #fff;box-shadow:0 0 0 1.5px rgba(0,0,0,.15);}
+.gcard-body{flex:1;min-width:0;}
+.gcard-name{font-size:13px;font-weight:500;line-height:1.3;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.gcard-meta{font-size:11px;color:var(--muted);display:flex;gap:6px;align-items:center;}
+.dist-badge{font-size:10px;background:#E8F4FF;color:#1860A0;padding:1px 6px;border-radius:8px;font-weight:500;}
+.detail{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--card);border-radius:20px 20px 0 0;box-shadow:0 -4px 30px rgba(0,0,0,0.18);z-index:600;max-height:80vh;overflow-y:auto;}
+.detail.open{display:block;}
+.detail-handle{padding:10px 0 4px;display:flex;justify-content:center;}
+.detail-inner{padding:4px 18px 28px;}
+.dbadge{font-size:11px;font-weight:500;padding:3px 10px;border-radius:10px;display:inline-block;margin-bottom:8px;}
+.detail-name{font-family:'Playfair Display',serif;font-size:20px;line-height:1.25;margin-bottom:2px;}
+.detail-sub{font-size:13px;color:var(--muted);margin-bottom:4px;}
+.detail-rating{font-size:13px;color:#B07010;margin-bottom:12px;}
+.detail-row{display:flex;align-items:flex-start;gap:10px;font-size:13px;margin-bottom:6px;}
+.detail-row .ico{font-size:15px;flex-shrink:0;margin-top:1px;}
+.hours-toggle{font-size:12px;color:var(--accent);cursor:pointer;margin:4px 0 6px;display:block;}
+.hours-list{font-size:12px;color:var(--muted);line-height:1.9;display:none;margin-bottom:8px;}
+.hours-list.open{display:block;}
+.mode-strip{display:flex;gap:6px;margin:12px 0 10px;}
+.mmode{flex:1;padding:9px 4px;border-radius:10px;border:1px solid var(--border);background:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;text-align:center;color:var(--muted);transition:all .2s;}
+.mmode.active{background:var(--dark);border-color:var(--dark);color:#fff;}
+.dir-input{width:100%;padding:11px 14px;border-radius:12px;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;margin-bottom:10px;color:var(--dark);}
+.dir-input:focus{border-color:var(--accent);}
+.btn-dir{width:100%;padding:13px;border-radius:12px;border:none;background:var(--accent);color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-close-d{float:right;background:var(--cream);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;color:var(--muted);margin-bottom:10px;}
+.overlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.25);}
+.overlay.open{display:block;}
+.fab-loc{position:fixed;right:14px;z-index:300;width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.13);border:none;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;transition:background .15s;}
+.fab-loc:active{background:#fff3ee;}
+.loading{position:fixed;inset:0;background:var(--dark);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s;}
+.loading.done{opacity:0;pointer-events:none;}
+.loading-logo{font-family:'Playfair Display',serif;font-size:32px;color:#fff;margin-bottom:6px;}
+.loading-logo span{color:var(--accent);}
+.loading-sub{font-size:13px;color:rgba(255,255,255,.4);margin-bottom:30px;}
+.spinner{width:28px;height:28px;border:3px solid rgba(255,255,255,.15);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.no-results{text-align:center;padding:40px 20px;color:var(--muted);}
+.no-results .big{font-size:36px;margin-bottom:8px;}
+.user-pulse{width:16px;height:16px;background:#3B82F6;border:3px solid #fff;border-radius:50%;box-shadow:0 0 0 6px rgba(59,130,246,.2);}
+</style>
+</head>
+<body>
+
+<div class="loading" id="loading">
+  <div class="loading-logo">Artsy <span>Places</span></div>
+  <div class="loading-sub">Finding galleries near you…</div>
+  <div class="spinner"></div>
+</div>
+
+<div class="topbar">
+  <div class="logo">Artsy <span>Places</span></div>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Search galleries, areas…" oninput="filterGalleries()">
+  </div>
+  <button class="loc-btn" id="locBtn" onclick="goToMyLocation()">📍</button>
+</div>
+<div class="filters">
+  <button class="fpill active" onclick="setFilter('all',this)">All</button>
+  <button class="fpill" onclick="setFilter('Delhi',this)">🎨 Delhi</button>
+  <button class="fpill" onclick="setFilter('Europe',this)">🇪🇺 Europe</button>
+  <button class="fpill" onclick="setFilter('Americas',this)">🌎 Americas</button>
+  <button class="fpill" onclick="setFilter('Asia Pacific',this)">🌏 Asia Pacific</button>
+  <button class="fpill" onclick="setFilter('Middle East',this)">🌙 Middle East</button>
+  <button class="fpill" onclick="setFilter('Africa',this)">🌍 Africa</button>
+</div>
+
+<div id="map"></div>
+<button class="fab-loc" id="fabLoc" style="bottom:220px;" onclick="goToMyLocation()">📍</button>
+
+<div class="sheet half" id="sheet">
+  <div class="sheet-handle-row" onclick="toggleSheet()"><div class="handle"></div></div>
+  <div class="sheet-title-row">
+    <div class="sheet-title">Art Galleries</div>
+    <span class="count-pill" id="countBadge">0</span>
+  </div>
+  <div class="nearby-note" id="nearbyNote"></div>
+  <div class="glist" id="galleryList"></div>
+</div>
+
+<div class="overlay" id="overlay" onclick="closeDetail()"></div>
+<div class="detail" id="detailSheet">
+  <div class="detail-handle"><div class="handle"></div></div>
+  <div class="detail-inner">
+    <button class="btn-close-d" onclick="closeDetail()">✕</button>
+    <div class="dbadge" id="dRegion"></div>
+    <div class="detail-name" id="dName"></div>
+    <div class="detail-sub" id="dSub"></div>
+    <div class="detail-rating" id="dRating"></div>
+    <div class="detail-row"><span class="ico">📍</span><span id="dAddress"></span></div>
+    <span class="hours-toggle" onclick="toggleHours()">🕐 Show opening hours</span>
+    <div class="hours-list" id="dHours"></div>
+    <div class="mode-strip">
+      <button class="mmode active" onclick="setMode('driving',this)">🚗 Drive</button>
+      <button class="mmode" onclick="setMode('walking',this)">🚶 Walk</button>
+      <button class="mmode" onclick="setMode('cycling',this)">🚴 Cycle</button>
+    </div>
+    <input class="dir-input" id="fromInput" placeholder="Your location (tap 📍 for GPS)">
+    <button class="btn-dir" onclick="getDirections()">🧭 Get directions</button>
+  </div>
+</div>
+
+<script>
+const galleries=[
+  // ══════════════════════════════════
+  // DELHI — 100 galleries from Google Maps
+  // ══════════════════════════════════
+  {name:"National Gallery of Modern Art",area:"India Gate",city:"New Delhi",region:"Delhi",lat:28.6102,lng:77.2344,address:"Jaipur House, Shershah Rd, India Gate",rating:4.5,hours:["Mon: Closed","Tue–Fri: 10am–6pm","Sat–Sun: 11am–8pm"]},
+  {name:"National Museum",area:"Janpath",city:"New Delhi",region:"Delhi",lat:28.6119,lng:77.2193,address:"Janpath Rd, Central Secretariat",rating:4.6,hours:["Mon: Closed","Tue–Sun: 10am–6pm"]},
+  {name:"National Crafts Museum",area:"Pragati Maidan",city:"New Delhi",region:"Delhi",lat:28.6136,lng:77.2425,address:"Bhairon Marg, Pragati Maidan",rating:4.6,hours:["Mon: Closed","Tue–Sun: 10am–6pm"]},
+  {name:"Kiran Nadar Museum of Art",area:"Saket",city:"New Delhi",region:"Delhi",lat:28.5285,lng:77.2205,address:"145 DLF South Court Mall, Saket",rating:4.4,hours:["Mon: Closed","Tue–Sun: 10:30am–6:30pm"]},
+  {name:"Bikaner House",area:"India Gate",city:"New Delhi",region:"Delhi",lat:28.6118,lng:77.2318,address:"Pandara Rd, India Gate",rating:4.4,hours:["Mon–Sun: 10am–7pm"]},
+  {name:"DAG",area:"Janpath",city:"New Delhi",region:"Delhi",lat:28.6181,lng:77.2191,address:"22A Janpath Rd, Windsor Place",rating:4.4,hours:["Mon–Sat: 10:30am–7pm","Sun: Closed"]},
+  {name:"Dhoomimal Gallery",area:"Connaught Place",city:"New Delhi",region:"Delhi",lat:28.6324,lng:77.2168,address:"G-42, Connaught Circle, Block G",rating:4.3,hours:["Mon–Sun: 11am–7pm"]},
+  {name:"Dhoomimal Art Centre",area:"Connaught Place",city:"New Delhi",region:"Delhi",lat:28.6327,lng:77.2178,address:"A-8, Block A, Connaught Place",rating:4.0,hours:["Mon–Sat: 10:30am–7pm","Sun: Closed"]},
+  {name:"The Lexicon Art",area:"Connaught Place",city:"New Delhi",region:"Delhi",lat:28.6317,lng:77.2224,address:"M-12, Block M, Connaught Place",rating:4.3,hours:["Mon–Sun: 10am–7pm"]},
+  {name:"AIFACS Gallery",area:"Rafi Marg",city:"New Delhi",region:"Delhi",lat:28.6177,lng:77.2119,address:"1, Rafi Marg, Sansad Marg Area",rating:4.5,hours:["Mon–Sun: 11am–7pm"]},
+  {name:"Art Heritage",area:"Mandi House",city:"New Delhi",region:"Delhi",lat:28.6274,lng:77.2324,address:"205 Tansen Marg, Triveni Kala Sangam",rating:4.6,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"Shridharani Gallery",area:"Mandi House",city:"New Delhi",region:"Delhi",lat:28.6271,lng:77.2324,address:"205 Tansen Marg, Triveni Kala Sangam",rating:4.8,hours:["Mon–Sun: 11am–8pm"]},
+  {name:"Triveni Kala Sangam",area:"Mandi House",city:"New Delhi",region:"Delhi",lat:28.6273,lng:77.2324,address:"205 Tansen Marg, Mandi House",rating:4.6,hours:["Mon–Sun: 11am–8pm"]},
+  {name:"Lalit Kala Akademi",area:"Mandi House",city:"New Delhi",region:"Delhi",lat:28.6247,lng:77.2311,address:"35 Firozeshah Rd, Mandi House",rating:4.5,hours:["Mon–Sun: 11am–7pm"]},
+  {name:"Gallerie Nvya (Mandi House)",area:"Mandi House",city:"New Delhi",region:"Delhi",lat:28.6273,lng:77.2325,address:"205 Tansen Marg, opp. FICCI Auditorium",rating:4.0,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"Art Pilgrim Gallery",area:"Mandi House",city:"New Delhi",region:"Delhi",lat:28.6272,lng:77.2329,address:"205 Triveni Kala Sangam, Tansen Marg",rating:4.9,hours:["Mon–Sun: 11am–7pm"]},
+  {name:"Visual Arts Gallery",area:"Lodi Colony",city:"New Delhi",region:"Delhi",lat:28.5895,lng:77.2248,address:"Lodhi Rd, India Habitat Centre",rating:4.6,hours:["Mon–Sun: 10am–8pm"]},
+  {name:"Palette Art Gallery",area:"Golf Links",city:"New Delhi",region:"Delhi",lat:28.5929,lng:77.2335,address:"14, Golf Links",rating:4.4,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"Lodhi Art District",area:"Lodi Colony",city:"New Delhi",region:"Delhi",lat:28.5921,lng:77.2286,address:"Lodhi Colony (outdoor murals)",rating:4.5,hours:["Open 24 hours"]},
+  {name:"Passage Art",area:"Khan Market",city:"New Delhi",region:"Delhi",lat:28.5999,lng:77.2267,address:"66, Khan Market",rating:4.0,hours:["Mon–Sat: 10am–6pm","Sun: Closed"]},
+  {name:"Nero ArtHub",area:"Amrit Nagar",city:"New Delhi",region:"Delhi",lat:28.5749,lng:77.2189,address:"79, Basement, Amrit Nagar, Pilanji",rating:4.6,hours:["Mon–Sat: 11am–6pm","Sun: Closed"]},
+  {name:"Pichwai Gallery",area:"Bhogal",city:"New Delhi",region:"Delhi",lat:28.5822,lng:77.2499,address:"80, Bhogal Rd, Jangpura",rating:4.9,hours:["Mon–Sat: 11am–6pm","Sun: Closed"]},
+  {name:"Modern Art Gallery Santushti",area:"Chanakyapuri",city:"New Delhi",region:"Delhi",lat:28.5951,lng:77.1981,address:"29 Santushti Shopping Complex, Chanakyapuri",rating:4.3,hours:["Mon–Sun: 11am–7pm"]},
+  {name:"Gallery West End",area:"West End Colony",city:"New Delhi",region:"Delhi",lat:28.5752,lng:77.1639,address:"C-16, West End Colony",rating:4.8,hours:["Mon–Sun: 11am–8pm"]},
+  {name:"blueprint12",area:"Anand Niketan",city:"New Delhi",region:"Delhi",lat:28.5793,lng:77.1654,address:"C-66, Anand Niketan, Moti Bagh",rating:4.8,hours:["By appointment"]},
+  {name:"Surrendra Paul Art Gallery",area:"Vasant Vihar",city:"New Delhi",region:"Delhi",lat:28.5622,lng:77.1642,address:"11/6, A-12, Block A, Vasant Vihar",rating:4.9,hours:["Mon–Sun: 11am–7pm"]},
+  {name:"ArchitArt Gallery",area:"Kirti Nagar",city:"New Delhi",region:"Delhi",lat:28.6453,lng:77.1425,address:"Shop 28, Furniture Block, Kirti Nagar",rating:4.7,hours:["Mon: Closed","Tue–Sat: 11am–8pm","Sun: 11:30am–8pm"]},
+  {name:"Creativity Art Gallery",area:"Hauz Khas Village",city:"New Delhi",region:"Delhi",lat:28.5546,lng:77.1950,address:"6 Hauz Khas Fort Rd, Hauz Khas Village",rating:4.8,hours:["Mon–Sun: 11am–7pm"]},
+  {name:"Rang Art Gallery",area:"Hauz Khas Village",city:"New Delhi",region:"Delhi",lat:28.5549,lng:77.1943,address:"Ground Floor, Hauz Khas Village",rating:4.8,hours:["Mon–Sun: 11am–8pm"]},
+  {name:"Lokayata Art Gallery",area:"Hauz Khas Village",city:"New Delhi",region:"Delhi",lat:28.5549,lng:77.1955,address:"No.1 Hauz Khas Village",rating:4.4,hours:["Mon,Wed–Sun: 11am–7pm","Tue: Closed"]},
+  {name:"Arts Of The Earth",area:"Hauz Khas Village",city:"New Delhi",region:"Delhi",lat:28.5550,lng:77.1946,address:"No.1 Hauz Khas Village",rating:5.0,hours:["Mon–Sun: 11am–7pm"]},
+  {name:"Blue Dot Art Gallery",area:"Hauz Khas Village",city:"New Delhi",region:"Delhi",lat:28.5551,lng:77.1948,address:"1HKV, 1st Floor, Hauz Khas Village",rating:4.9,hours:["Mon–Sun: 11am–8pm"]},
+  {name:"The Village Gallery",area:"Hauz Khas Village",city:"New Delhi",region:"Delhi",lat:28.5544,lng:77.1944,address:"No.14 Hauz Khas Village",rating:4.6,hours:["Mon–Sun: 10am–7pm"]},
+  {name:"Gallery1000A",area:"Hauz Khas Village",city:"New Delhi",region:"Delhi",lat:28.5531,lng:77.1947,address:"G5/39 Daryacha Building, Hauz Khas Village",rating:4.6,hours:["Mon,Wed–Sun: 11:30am–7:30pm","Tue: Closed"]},
+  {name:"Mati Art",area:"Hauz Khas Village",city:"New Delhi",region:"Delhi",lat:28.5550,lng:77.1950,address:"1 Basement, Hauz Khas Village",rating:5.0,hours:["Mon–Sun: 11am–7pm"]},
+  {name:"Gallerie Ruki",area:"Hauz Khas Village",city:"New Delhi",region:"Delhi",lat:28.5534,lng:77.1942,address:"Shop 3, Build 30, Hauz Khas Village",rating:4.3,hours:["Mon: Closed","Tue–Sun: 11am–7pm"]},
+  {name:"Gallery ONKAF",area:"Hauz Khas",city:"New Delhi",region:"Delhi",lat:28.5514,lng:77.2015,address:"C-1/20 Safdarjung Development Area",rating:4.7,hours:["Mon–Sun: 11am–7pm"]},
+  {name:"Art Konsult",area:"Hauz Khas Village",city:"New Delhi",region:"Delhi",lat:28.5534,lng:77.1943,address:"1 Basement, near Blossom Cafe, Hauz Khas Village",rating:4.3,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"Gallery Art.Motif",area:"Safdarjung Enclave",city:"New Delhi",region:"Delhi",lat:28.5679,lng:77.1966,address:"A1/178, Safdarjung Enclave, 4th Floor",rating:4.5,hours:["Mon–Sat: 10am–6pm","Sun: Closed"]},
+  {name:"Anant Art Gallery",area:"Safdarjung Enclave",city:"New Delhi",region:"Delhi",lat:28.5616,lng:77.1886,address:"B-5/3, Safdarjung Enclave",rating:4.8,hours:["Mon–Sat: 11am–6pm","Sun: Closed"]},
+  {name:"Talwar Gallery",area:"Neeti Bagh",city:"New Delhi",region:"Delhi",lat:28.5594,lng:77.2149,address:"C-84, Block C, Neeti Bagh",rating:4.4,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"Nature Morte",area:"Neeti Bagh",city:"New Delhi",region:"Delhi",lat:28.5600,lng:77.1900,address:"A-1, Neeti Bagh",rating:4.5,hours:["Mon–Sat: 11am–6pm","Sun: Closed"]},
+  {name:"OPS Art",area:"Shahpur Jat",city:"New Delhi",region:"Delhi",lat:28.5487,lng:77.2157,address:"129 A, Shahpur Jat, Siri Fort",rating:4.7,hours:["Mon–Sun: 10:30am–8:30pm"]},
+  {name:"Gallery Threshold",area:"Sarvodaya Enclave",city:"New Delhi",region:"Delhi",lat:28.5387,lng:77.2031,address:"C-221, Sarvodaya Enclave",rating:4.3,hours:["Mon–Sat: 10:30am–7pm","Sun: Closed"]},
+  {name:"Exhibit 320",area:"Lado Sarai",city:"New Delhi",region:"Delhi",lat:28.5236,lng:77.1939,address:"F-320 Old MB Road, Lado Sarai",rating:4.2,hours:["Mon–Sat: 10:30am–6:30pm","Sun: Closed"]},
+  {name:"Gallery Latitude 28",area:"Lado Sarai",city:"New Delhi",region:"Delhi",lat:28.5233,lng:77.1943,address:"F-213, Lado Sarai",rating:4.3,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"Gallery Art Positive",area:"Lado Sarai",city:"New Delhi",region:"Delhi",lat:28.5234,lng:77.1945,address:"F-213B Old MB Road, Lado Sarai",rating:4.3,hours:["Mon–Sat: 11am–6pm","Sun: Closed"]},
+  {name:"Art District XIII",area:"Lado Sarai",city:"New Delhi",region:"Delhi",lat:28.5235,lng:77.1944,address:"F-213A Old MB Road, Lado Sarai",rating:4.1,hours:["Mon–Sun: 10am–6pm"]},
+  {name:"Divine Art Gallery",area:"Lado Sarai",city:"New Delhi",region:"Delhi",lat:28.5236,lng:77.1941,address:"F-213A Old MB Road, Lado Sarai",rating:4.9,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"White Qube Art Gallery",area:"Lado Sarai",city:"New Delhi",region:"Delhi",lat:28.5245,lng:77.1908,address:"F-328 Lado Sarai, Mehrauli-Gurgaon Rd",rating:5.0,hours:["Mon–Sun: 11am–7pm"]},
+  {name:"Gallery Pioneer",area:"Lado Sarai",city:"New Delhi",region:"Delhi",lat:28.5238,lng:77.1937,address:"F-322 2nd Floor, Old MB Road, Lado Sarai",rating:4.9,hours:["Mon–Sat: 11am–6pm","Sun: Closed"]},
+  {name:"Bon Art Gallery",area:"Lado Sarai",city:"New Delhi",region:"Delhi",lat:28.5232,lng:77.1950,address:"Old MB Road, Lado Sarai",rating:4.8,hours:["Mon–Sat: 11:30am–7pm","Sun: Closed"]},
+  {name:"Ojas Art",area:"Mehrauli",city:"New Delhi",region:"Delhi",lat:28.5266,lng:77.1882,address:"1AQ, Near Qutb Minar, Seth Sarai, Mehrauli",rating:4.5,hours:["Mon: Closed","Tue–Sun: 11am–7pm"]},
+  {name:"Rang Mirage Art Gallery",area:"Sainik Farms",city:"New Delhi",region:"Delhi",lat:28.5101,lng:77.2239,address:"A-58, Central Ave, Sainik Farms Colony",rating:4.6,hours:["Mon–Sun: 11am–8pm"]},
+  {name:"Massarrat Art Gallery",area:"Greater Kailash II",city:"New Delhi",region:"Delhi",lat:28.5415,lng:77.2402,address:"Savitri Cinema Complex, GK II",rating:4.4,hours:["Mon–Sun: 12pm–6pm","Fri: 12pm–9pm"]},
+  {name:"Gallerie Ganesha",area:"Greater Kailash II",city:"New Delhi",region:"Delhi",lat:28.5380,lng:77.2404,address:"E-557, Greater Kailash II",rating:4.6,hours:["Mon–Sat: 11am–5pm","Sun: Closed"]},
+  {name:"Art Alive Gallery",area:"Panchsheel Park",city:"New Delhi",region:"Delhi",lat:28.5426,lng:77.2159,address:"S-221, Gamal Abdel Nasser Marg, Panchsheel Park",rating:4.4,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"Gallery XXL",area:"Defence Colony",city:"New Delhi",region:"Delhi",lat:28.5741,lng:77.2290,address:"A-277, 2nd Floor, Defence Colony",rating:4.8,hours:["Mon: Closed","Tue–Sun: 11:30am–7pm"]},
+  {name:"Vadehra Art Gallery",area:"Defence Colony",city:"New Delhi",region:"Delhi",lat:28.5708,lng:77.2358,address:"D-40, Defence Colony",rating:4.2,hours:["Mon–Sat: 10am–6pm","Sun: Closed"]},
+  {name:"Vadehra Art Gallery Contemporary",area:"Defence Colony",city:"New Delhi",region:"Delhi",lat:28.5686,lng:77.2346,address:"D-53, Defence Colony",rating:4.4,hours:["Mon–Sat: 10am–6pm","Sun: Closed"]},
+  {name:"Shrine Empire Gallery",area:"Defence Colony",city:"New Delhi",region:"Delhi",lat:28.5724,lng:77.2281,address:"B-24, Defence Colony",rating:4.3,hours:["Mon–Sat: 11am–6pm","Sun: Closed"]},
+  {name:"Akar Prakar Delhi",area:"Defence Colony",city:"New Delhi",region:"Delhi",lat:28.5702,lng:77.2355,address:"D-43, Defence Colony",rating:4.6,hours:["Mon–Sat: 11:30am–7pm","Sun: Closed"]},
+  {name:"Method Delhi",area:"Defence Colony",city:"New Delhi",region:"Delhi",lat:28.5676,lng:77.2340,address:"Basement D-59, Defence Colony",rating:4.7,hours:["Mon: Closed","Wed–Sun: 12pm–8pm"]},
+  {name:"Gallery Dotwalk",area:"Defence Colony",city:"New Delhi",region:"Delhi",lat:28.5715,lng:77.2363,address:"D-34 First Floor, Defence Colony",rating:4.8,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"Aryan Art Gallery",area:"Defence Colony",city:"New Delhi",region:"Delhi",lat:28.5718,lng:77.2365,address:"D-33, Defence Colony",rating:4.3,hours:["Mon–Sat: 10am–5pm","Sun: Closed"]},
+  {name:"Treasure Art Gallery",area:"Defence Colony",city:"New Delhi",region:"Delhi",lat:28.5734,lng:77.2373,address:"D-24, Defence Colony",rating:4.5,hours:["Mon–Fri: 11am–6pm","Sat–Sun: Closed"]},
+  {name:"Latitude 28",area:"Defence Colony",city:"New Delhi",region:"Delhi",lat:28.5697,lng:77.2266,address:"B-74 Ground Floor, Defence Colony",rating:5.0,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"Art Culture Festival Gallery",area:"Defence Colony",city:"New Delhi",region:"Delhi",lat:28.5695,lng:77.2350,address:"D-49, Defence Colony",rating:3.6,hours:["Mon–Fri: 10am–5pm","Sat–Sun: Closed"]},
+  {name:"Galerie Mirchandani + Steinruecke",area:"Defence Colony",city:"New Delhi",region:"Delhi",lat:28.5678,lng:77.2341,address:"C.R. Tower D-58, Defence Colony",rating:4.8,hours:["Mon: Closed","Tue–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"Gallery Espace",area:"New Friends Colony",city:"New Delhi",region:"Delhi",lat:28.5622,lng:77.2687,address:"16 Sujan Mohinder Rd, New Friends Colony",rating:4.3,hours:["Mon–Sun: 11am–7pm"]},
+  {name:"The Stainless Gallery",area:"Ishwar Nagar",city:"New Delhi",region:"Delhi",lat:28.5587,lng:77.2679,address:"Block C-O/4, Friends Colony West, Ishwar Nagar",rating:4.4,hours:["Mon–Sun: 11:15am–7pm"]},
+  {name:"Gallerie Nvya South Delhi",area:"Friends Colony",city:"New Delhi",region:"Delhi",lat:28.5694,lng:77.2615,address:"A-29 Friends Colony East",rating:4.7,hours:["Mon–Sun: 11am–7pm"]},
+  {name:"AnYahh Art Gallery (Southex 2)",area:"South Extension II",city:"New Delhi",region:"Delhi",lat:28.5680,lng:77.2206,address:"E-12, 4th Floor, South Extension II",rating:4.5,hours:["Mon–Sun: 11am–8pm"]},
+  {name:"Speaking Art Gallery",area:"South Extension I",city:"New Delhi",region:"Delhi",lat:28.5704,lng:77.2202,address:"N-33, South Extension I",rating:4.9,hours:["Mon: Closed","Tue–Sun: 11am–7pm"]},
+  {name:"Super Art Gallery",area:"Lajpat Nagar",city:"New Delhi",region:"Delhi",lat:28.5686,lng:77.2415,address:"Shop 39, Central Market, Lajpat Nagar II",rating:4.2,hours:["Mon: Closed","Tue–Sun: 11am–9pm"]},
+  {name:"Arthshila Delhi",area:"Okhla",city:"New Delhi",region:"Delhi",lat:28.5357,lng:77.2762,address:"B-19/1, Okhla Phase II",rating:4.7,hours:["Mon: Closed","Tue–Sun: 9am–7pm"]},
+  {name:"Sanchit Art",area:"Saket",city:"New Delhi",region:"Delhi",lat:28.5283,lng:77.2206,address:"167 DLF South Court Mall, Saket",rating:4.1,hours:["Mon–Sat: 10am–6pm","Sun: Closed"]},
+  {name:"KHOJ International Artists Association",area:"Khirkee Extension",city:"New Delhi",region:"Delhi",lat:28.5335,lng:77.2098,address:"S-17, Khirkee Extension",rating:4.4,hours:["Mon–Sat: 11am–6pm","Sun: Closed"]},
+  // ══════════════════════════════════
+  // WORLD GALLERIES
+  // ══════════════════════════════════
+  {name:"The Louvre",area:"1st Arr.",city:"Paris",region:"Europe",lat:48.8606,lng:2.3376,address:"Rue de Rivoli, 75001 Paris",rating:4.8,hours:["Mon,Wed–Sun: 9am–6pm","Tue: Closed","Wed,Fri: until 9:45pm"]},
+  {name:"Musée d'Orsay",area:"7th Arr.",city:"Paris",region:"Europe",lat:48.8600,lng:2.3266,address:"1 Rue de la Légion d'Honneur, Paris",rating:4.8,hours:["Mon: Closed","Tue–Sun: 9:30am–6pm","Thu: until 9:45pm"]},
+  {name:"Centre Pompidou",area:"4th Arr.",city:"Paris",region:"Europe",lat:48.8606,lng:2.3522,address:"Place Georges-Pompidou, 75004 Paris",rating:4.5,hours:["Mon,Wed–Sun: 11am–9pm","Tue: Closed"]},
+  {name:"Tate Modern",area:"Southbank",city:"London",region:"Europe",lat:51.5076,lng:-0.0994,address:"Bankside, London SE1 9TG",rating:4.6,hours:["Mon–Sun: 10am–6pm","Fri–Sat: 10am–10pm"]},
+  {name:"National Gallery London",area:"Trafalgar Square",city:"London",region:"Europe",lat:51.5089,lng:-0.1283,address:"Trafalgar Square, London WC2N 5DN",rating:4.7,hours:["Mon–Sun: 10am–6pm","Fri: 10am–9pm"]},
+  {name:"Uffizi Gallery",area:"Historic Centre",city:"Florence",region:"Europe",lat:43.7677,lng:11.2553,address:"Piazzale degli Uffizi 6, Florence",rating:4.7,hours:["Mon: Closed","Tue–Sun: 8:15am–6:50pm"]},
+  {name:"Vatican Museums",area:"Vatican City",city:"Rome",region:"Europe",lat:41.9065,lng:12.4536,address:"Viale Vaticano, Vatican City",rating:4.7,hours:["Mon: Closed","Tue–Sun: 9am–6pm"]},
+  {name:"Museo del Prado",area:"Retiro",city:"Madrid",region:"Europe",lat:40.4138,lng:-3.6921,address:"C. de Ruiz de Alarcón 23, Madrid",rating:4.8,hours:["Mon–Sat: 10am–8pm","Sun: 10am–7pm"]},
+  {name:"Guggenheim Bilbao",area:"Abandoibarra",city:"Bilbao",region:"Europe",lat:43.2688,lng:-2.9339,address:"Abandoibarra Etorb. 2, Bilbao",rating:4.7,hours:["Mon: Closed","Tue–Sun: 10am–8pm"]},
+  {name:"Rijksmuseum",area:"Museum Quarter",city:"Amsterdam",region:"Europe",lat:52.3600,lng:4.8852,address:"Museumstraat 1, Amsterdam",rating:4.8,hours:["Mon–Sun: 9am–5pm"]},
+  {name:"Van Gogh Museum",area:"Museum Quarter",city:"Amsterdam",region:"Europe",lat:52.3584,lng:4.8811,address:"Museumplein 6, Amsterdam",rating:4.7,hours:["Mon–Sun: 9am–5pm","Fri: 9am–9pm"]},
+  {name:"State Hermitage Museum",area:"Palace Square",city:"St Petersburg",region:"Europe",lat:59.9398,lng:30.3146,address:"Palace Square 2, St Petersburg",rating:4.8,hours:["Mon: Closed","Tue,Thu,Sat–Sun: 10:30am–6pm","Wed,Fri: 10:30am–9pm"]},
+  {name:"MoMA",area:"Midtown",city:"New York",region:"Americas",lat:40.7614,lng:-73.9777,address:"11 W 53rd St, New York, NY 10019",rating:4.6,hours:["Mon,Wed,Thu,Sat–Sun: 10:30am–5:30pm","Fri: 10:30am–9pm","Tue: Closed"]},
+  {name:"The Metropolitan Museum of Art",area:"Upper East Side",city:"New York",region:"Americas",lat:40.7794,lng:-73.9632,address:"1000 5th Ave, New York, NY 10028",rating:4.8,hours:["Mon,Tue,Thu,Sun: 10am–5pm","Fri–Sat: 10am–9pm","Wed: Closed"]},
+  {name:"Art Institute of Chicago",area:"Millennium Park",city:"Chicago",region:"Americas",lat:41.8796,lng:-87.6237,address:"111 S Michigan Ave, Chicago, IL",rating:4.8,hours:["Mon,Wed–Sun: 11am–5pm","Tue: Closed","Thu: 11am–8pm"]},
+  {name:"Getty Center",area:"Brentwood",city:"Los Angeles",region:"Americas",lat:34.0780,lng:-118.4741,address:"1200 Getty Center Dr, Los Angeles",rating:4.8,hours:["Mon: Closed","Tue–Fri,Sun: 10am–5:30pm","Sat: 10am–9pm"]},
+  {name:"São Paulo Museum of Art",area:"Paulista",city:"São Paulo",region:"Americas",lat:-23.5613,lng:-46.6558,address:"Av. Paulista 1578, São Paulo",rating:4.6,hours:["Mon: Closed","Tue–Sun: 10am–6pm","Thu: 10am–8pm"]},
+  {name:"Tokyo National Museum",area:"Ueno",city:"Tokyo",region:"Asia Pacific",lat:35.7187,lng:139.7763,address:"13-9 Uenokoen, Taito City, Tokyo",rating:4.6,hours:["Mon: Closed","Tue–Sun: 9:30am–5pm","Fri–Sat: 9:30am–8pm"]},
+  {name:"teamLab Planets",area:"Toyosu",city:"Tokyo",region:"Asia Pacific",lat:35.6476,lng:139.7952,address:"6-1-16 Toyosu, Koto City, Tokyo",rating:4.7,hours:["Mon–Sun: 9am–9pm"]},
+  {name:"National Museum of Korea",area:"Yongsan",city:"Seoul",region:"Asia Pacific",lat:37.5237,lng:126.9806,address:"137 Seobinggo-ro, Yongsan-gu, Seoul",rating:4.7,hours:["Mon,Wed,Thu,Sat: 10am–6pm","Tue: Closed","Fri,Sat: 10am–9pm"]},
+  {name:"M+ Museum",area:"West Kowloon",city:"Hong Kong",region:"Asia Pacific",lat:22.3035,lng:114.1597,address:"38 Museum Dr, West Kowloon, Hong Kong",rating:4.5,hours:["Mon: Closed","Tue–Sun: 10am–6pm","Fri: 10am–10pm"]},
+  {name:"National Gallery Singapore",area:"City Hall",city:"Singapore",region:"Asia Pacific",lat:1.2896,lng:103.8513,address:"1 St Andrew's Rd, Singapore",rating:4.6,hours:["Mon–Sun: 10am–7pm","Fri: 10am–9pm"]},
+  {name:"Art Gallery of New South Wales",area:"The Domain",city:"Sydney",region:"Asia Pacific",lat:-33.8688,lng:151.2170,address:"Art Gallery Rd, The Domain, Sydney",rating:4.6,hours:["Mon–Sun: 10am–5pm","Wed: 10am–10pm"]},
+  {name:"Louvre Abu Dhabi",area:"Saadiyat Island",city:"Abu Dhabi",region:"Middle East",lat:24.5338,lng:54.3981,address:"Saadiyat Cultural District, Abu Dhabi",rating:4.7,hours:["Mon: Closed","Tue–Sun: 10am–6:30pm","Thu–Sat: 10am–8:30pm"]},
+  {name:"Museum of Islamic Art",area:"Corniche",city:"Doha",region:"Middle East",lat:25.2948,lng:51.5378,address:"Al Corniche St, Doha, Qatar",rating:4.7,hours:["Mon–Thu,Sat: 9am–5pm","Fri: 1:30pm–8:30pm","Sun: Closed"]},
+  {name:"Istanbul Modern",area:"Beyoglu",city:"Istanbul",region:"Middle East",lat:41.0290,lng:28.9845,address:"Meclis-i Mebusan Cd, Beyoglu, Istanbul",rating:4.5,hours:["Mon: Closed","Tue–Sun: 10am–6pm","Thu: 10am–8pm"]},
+  {name:"Zeitz MOCAA",area:"V&A Waterfront",city:"Cape Town",region:"Africa",lat:-33.9066,lng:18.4215,address:"V&A Waterfront, Cape Town",rating:4.5,hours:["Mon: Closed","Tue–Sun: 10am–6pm","Fri: 10am–9pm"]},
+  {name:"Egyptian Museum Cairo",area:"Tahrir Square",city:"Cairo",region:"Africa",lat:30.0478,lng:31.2336,address:"Tahrir Square, Cairo",rating:4.6,hours:["Mon–Sun: 9am–5pm"]},
+];
+
+const regionColors={Delhi:"#C4622D",Europe:"#2050C0",Americas:"#3A7A20","Asia Pacific":"#A06010","Middle East":"#7040B0",Africa:"#207050"};
+const badgeClass={Delhi:"bi",Europe:"be",Americas:"ba","Asia Pacific":"bap","Middle East":"bm",Africa:"baf"};
+const badgeStyle={Delhi:"background:#FFF0E8;color:#C4622D",Europe:"background:#E8F0FF;color:#2050C0",Americas:"background:#EDFEE8;color:#306020","Asia Pacific":"background:#FFF8E0;color:#906010","Middle East":"background:#F5E8FF;color:#6030A0",Africa:"background:#E8FFF5;color:#20705A"};
+
+let map,markers=[],userMarker=null,routeLine=null,travelMode="driving",activeFilter="all",activeIdx=null,sheetState="half";
+let userLat=null,userLng=null;
+
+function distKm(lat1,lng1,lat2,lng2){
+  const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLng=(lng2-lng1)*Math.PI/180;
+  const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+function fmtDist(km){
+  return km<1?(Math.round(km*1000)+"m"):(km.toFixed(1)+"km");
+}
+
+function initMap(){
+  map=L.map("map",{zoomControl:false}).setView([28.57,77.21],12);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{attribution:'© OpenStreetMap © Carto',maxZoom:19}).addTo(map);
+  galleries.forEach((g,i)=>{
+    const m=L.marker([g.lat,g.lng],{icon:makeIcon(g.region,false)}).addTo(map);
+    m.on("click",()=>openDetail(i));
+    markers.push(m);
+  });
+  renderList(galleries);
+  getUserLocation(true);
+}
+
+function makeIcon(region,big){
+  const c=regionColors[region]||"#888",s=big?16:11;
+  return L.divIcon({className:"",html:`<div style="width:${s}px;height:${s}px;background:${c};border:${big?3:2}px solid #fff;border-radius:50%;box-shadow:0 1px 5px rgba(0,0,0,.3)"></div>`,iconSize:[s,s],iconAnchor:[s/2,s/2]});
+}
+
+function getUserLocation(onLoad){
+  if(!navigator.geolocation)return void document.getElementById("loading").classList.add("done");
+  navigator.geolocation.getCurrentPosition(pos=>{
+    userLat=pos.coords.latitude; userLng=pos.coords.longitude;
+    placeUserMarker(userLat,userLng);
+    if(onLoad){
+      map.flyTo([userLat,userLng],14,{duration:1.5});
+      filterGalleries(); // re-sort by distance
+    }
+    document.getElementById("fromInput").value=`${userLat.toFixed(6)}, ${userLng.toFixed(6)}`;
+    document.getElementById("loading").classList.add("done");
+  },()=>{
+    document.getElementById("loading").classList.add("done");
+  },{timeout:8000,enableHighAccuracy:true});
+}
+
+function goToMyLocation(){
+  document.getElementById("locBtn").classList.add("active");
+  setTimeout(()=>document.getElementById("locBtn").classList.remove("active"),1500);
+  if(!navigator.geolocation)return alert("Location not available");
+  navigator.geolocation.getCurrentPosition(pos=>{
+    userLat=pos.coords.latitude; userLng=pos.coords.longitude;
+    placeUserMarker(userLat,userLng);
+    map.flyTo([userLat,userLng],14,{duration:1});
+    document.getElementById("fromInput").value=`${userLat.toFixed(6)}, ${userLng.toFixed(6)}`;
+    filterGalleries();
+  },()=>alert("Could not get location. Please enable location access."),{enableHighAccuracy:true});
+}
+
+function placeUserMarker(lat,lng){
+  if(userMarker)map.removeLayer(userMarker);
+  userMarker=L.marker([lat,lng],{icon:L.divIcon({className:"",html:'<div class="user-pulse"></div>',iconSize:[16,16],iconAnchor:[8,8]})}).addTo(map);
+}
+
+function toggleSheet(){
+  const s=document.getElementById("sheet");
+  sheetState=sheetState==="half"?"full":sheetState==="full"?"collapsed":"half";
+  s.className="sheet "+sheetState;
+  document.getElementById("fabLoc").style.bottom=sheetState==="full"?"calc(80vh + 14px)":sheetState==="half"?"220px":"80px";
+}
+
+function renderList(list){
+  document.getElementById("countBadge").textContent=list.length;
+  const noteEl=document.getElementById("nearbyNote");
+  const el=document.getElementById("galleryList");
+  if(!list.length){noteEl.textContent="";el.innerHTML=`<div class="no-results"><div class="big">🎨</div>No galleries found</div>`;return;}
+
+  // Sort by distance if we have location
+  if(userLat!==null){
+    list=list.slice().sort((a,b)=>distKm(userLat,userLng,a.lat,a.lng)-distKm(userLat,userLng,b.lat,b.lng));
+    noteEl.textContent="Sorted by distance from your location";
+  } else {
+    noteEl.textContent="Enable location to see nearest galleries first";
+  }
+
+  el.innerHTML=list.map(g=>{
+    const i=galleries.indexOf(g);
+    const dist=userLat!==null?fmtDist(distKm(userLat,userLng,g.lat,g.lng)):null;
+    return`<div class="gcard" id="card-${i}" onclick="openDetail(${i})">
+      <div class="gcard-dot" style="background:${regionColors[g.region]||'#888'}"></div>
+      <div class="gcard-body">
+        <div class="gcard-name">${g.name}</div>
+        <div class="gcard-meta">
+          <span>${g.area}</span>
+          <span>⭐ ${g.rating}</span>
+          ${dist?`<span class="dist-badge">📍 ${dist}</span>`:""}
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function openDetail(i){
+  const g=galleries[i];activeIdx=i;
+  document.querySelectorAll(".gcard").forEach(c=>c.classList.remove("active"));
+  const card=document.getElementById(`card-${i}`);
+  if(card){card.classList.add("active");card.scrollIntoView({behavior:"smooth",block:"nearest"});}
+  document.getElementById("dRegion").textContent=g.region;
+  document.getElementById("dRegion").style=badgeStyle[g.region]||"";
+  document.getElementById("dName").textContent=g.name;
+  const dist=userLat!==null?" · "+fmtDist(distKm(userLat,userLng,g.lat,g.lng))+" away":"";
+  document.getElementById("dSub").textContent=`${g.area} · ${g.city}${dist}`;
+  document.getElementById("dRating").textContent=`⭐ ${g.rating} rating`;
+  document.getElementById("dAddress").textContent=g.address;
+  const hoursEl=document.getElementById("dHours");
+  hoursEl.innerHTML=g.hours&&g.hours.length?g.hours.join("<br>"):"Hours not available";
+  hoursEl.classList.remove("open");
+  document.querySelector(".hours-toggle").textContent="🕐 Show opening hours";
+  markers.forEach((m,idx)=>m.setIcon(makeIcon(galleries[idx].region,false)));
+  markers[i].setIcon(makeIcon(g.region,true));
+  map.flyTo([g.lat,g.lng],16,{duration:1});
+  document.getElementById("detailSheet").classList.add("open");
+  document.getElementById("overlay").classList.add("open");
+  document.getElementById("sheet").className="sheet collapsed";
+  sheetState="collapsed";
+  document.getElementById("fabLoc").style.bottom="80px";
+}
+
+function toggleHours(){
+  const h=document.getElementById("dHours");
+  const t=document.querySelector(".hours-toggle");
+  h.classList.toggle("open");
+  t.textContent=h.classList.contains("open")?"🕐 Hide hours":"🕐 Show opening hours";
+}
+
+function closeDetail(){
+  document.getElementById("detailSheet").classList.remove("open");
+  document.getElementById("overlay").classList.remove("open");
+  if(activeIdx!==null)markers[activeIdx].setIcon(makeIcon(galleries[activeIdx].region,false));
+  activeIdx=null;
+  if(routeLine){map.removeLayer(routeLine);routeLine=null;}
+  document.getElementById("sheet").className="sheet half";
+  sheetState="half";
+  document.getElementById("fabLoc").style.bottom="220px";
+}
+
+function setMode(mode,btn){
+  travelMode=mode;
+  document.querySelectorAll(".mmode").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+}
+
+function getDirections(){
+  if(activeIdx===null)return;
+  const g=galleries[activeIdx];
+  const from=document.getElementById("fromInput").value.trim();
+  if(!from){getUserLocation(false);setTimeout(()=>{const v=document.getElementById("fromInput").value.trim();if(v)launch(g,v);else alert("Please enable location or enter your address.");},2000);return;}
+  launch(g,from);
+}
+
+function launch(g,from){
+  if(routeLine){map.removeLayer(routeLine);routeLine=null;}
+  const modeMap={driving:"driving",walking:"walking",cycling:"bicycling"};
+  let originParam;
+  if(from.match(/^-?\d+\.?\d*,\s*-?\d+\.?\d*$/)){
+    const[la,lo]=from.split(",").map(s=>s.trim());
+    originParam=`${la},${lo}`;
+    routeLine=L.polyline([[parseFloat(la),parseFloat(lo)],[g.lat,g.lng]],{color:"#C4622D",weight:3,dashArray:"8,5",opacity:.85}).addTo(map);
+    map.fitBounds(routeLine.getBounds(),{padding:[80,80]});
+  }else{originParam=encodeURIComponent(from);}
+  window.open(`https://www.google.com/maps/dir/?api=1&origin=${originParam}&destination=${encodeURIComponent(g.lat+","+g.lng)}&travelmode=${modeMap[travelMode]||"driving"}`,"_blank");
+}
+
+function setFilter(region,btn){
+  activeFilter=region;
+  document.querySelectorAll(".fpill").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  filterGalleries();
+}
+
+function filterGalleries(){
+  const q=document.getElementById("searchInput").value.toLowerCase();
+  let filtered=galleries.filter(g=>{
+    const mr=activeFilter==="all"||g.region===activeFilter;
+    const ms=!q||g.name.toLowerCase().includes(q)||g.city.toLowerCase().includes(q)||g.area.toLowerCase().includes(q);
+    return mr&&ms;
+  });
+  markers.forEach((m,i)=>{
+    const g=galleries[i];
+    const mr=activeFilter==="all"||g.region===activeFilter;
+    const ms=!q||g.name.toLowerCase().includes(q)||g.city.toLowerCase().includes(q)||g.area.toLowerCase().includes(q);
+    mr&&ms?(!map.hasLayer(m)&&m.addTo(map)):(map.hasLayer(m)&&map.removeLayer(m));
+  });
+  renderList(filtered);
+}
+
+initMap();
+</script>
+</body>
+</html>
