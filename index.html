@@ -3,6 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="description" content="Discover 100+ art galleries across Delhi NCR and iconic galleries worldwide. Get directions, hours, and open calls with The Art Walk.">
+<meta property="og:title" content="The Art Walk — Delhi & World Art Galleries">
+<meta property="og:description" content="Discover 100+ art galleries across Delhi NCR and iconic galleries worldwide.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://map.theartwalk.in/">
+<!-- Placeholder favicon: brand monogram in your palette, until the real logo file is uploaded to the repo (see below) -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><circle cx=%2232%22 cy=%2232%22 r=%2232%22 fill=%22%23F4E8D8%22/><text x=%2232%22 y=%2244%22 font-family=%22Georgia,serif%22 font-weight=%22700%22 font-size=%2236%22 text-anchor=%22middle%22 fill=%22%230B0A08%22>A</text></svg>">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VW42KRS81Z"></script>
 <script>
@@ -11,13 +18,13 @@
   gtag('js', new Date());
   gtag('config', 'G-VW42KRS81Z');
 </script>
-<title>Artsy Places — Delhi Art Galleries</title>
+<title>The Art Walk — Delhi & World Art Galleries</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{--cream:#F7F3EC;--dark:#1C1710;--accent:#C4622D;--muted:#9A8E7E;--card:#fff;--border:#EAE4D8;}
+:root{--cream:#F4E8D8;--dark:#0B0A08;--accent:#A8501F;--muted:#9C8D7A;--card:#fff;--border:#E5D8C6;}
 html,body{height:100%;width:100%;overflow:hidden;}
 body{font-family:'DM Sans',sans-serif;color:var(--dark);display:flex;flex-direction:column;background:var(--cream);}
 .topbar{background:var(--dark);padding:10px 14px;display:flex;align-items:center;gap:10px;z-index:500;flex-shrink:0;}
@@ -34,34 +41,38 @@ body{font-family:'DM Sans',sans-serif;color:var(--dark);display:flex;flex-direct
 .filters::-webkit-scrollbar{display:none;}
 .fpill{padding:5px 13px;border-radius:20px;border:1px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.55);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0;}
 .fpill.active{background:var(--accent);border-color:var(--accent);color:#fff;}
-#map{flex:1;z-index:1;min-height:0;}
-.sheet{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-radius:20px 20px 0 0;box-shadow:0 -4px 30px rgba(0,0,0,0.15);z-index:400;transition:transform .35s cubic-bezier(.4,0,.2,1);max-height:82vh;display:flex;flex-direction:column;}
-.sheet.collapsed{transform:translateY(calc(100% - 70px));}
-.sheet.half{transform:translateY(40%);}
-.sheet.full{transform:translateY(0);}
-.sheet-handle-row{padding:10px 0 6px;display:flex;flex-direction:column;align-items:center;cursor:pointer;flex-shrink:0;}
-.handle{width:40px;height:4px;background:var(--border);border-radius:4px;}
-.sheet-title-row{display:flex;align-items:center;justify-content:space-between;padding:0 16px 8px;flex-shrink:0;}
-.sheet-title{font-family:'Playfair Display',serif;font-size:16px;}
+
+.view-container{flex:1;position:relative;min-height:0;isolation:isolate;}
+.view{position:absolute;inset:0;display:none;flex-direction:column;}
+.view.active{display:flex;}
+#map{flex:1;min-height:0;}
+.list-header{padding:14px 16px 8px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.list-title{font-family:'Playfair Display',serif;font-size:16px;}
 .count-pill{background:var(--accent);color:#fff;font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;}
 .nearby-note{font-size:11px;color:var(--muted);padding:0 16px 8px;flex-shrink:0;}
-.glist{flex:1;overflow-y:auto;padding:0 12px 12px;min-height:0;scrollbar-width:none;}
+.glist{flex:1;overflow-y:auto;padding:0 12px 110px;min-height:0;scrollbar-width:none;}
 .glist::-webkit-scrollbar{display:none;}
-.gcard{background:#fff;border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:border-color .2s;display:flex;align-items:center;gap:12px;}
+
+.gcard{background:#fff;border:1px solid var(--border);border-radius:14px;padding:10px 14px;margin-bottom:8px;cursor:pointer;transition:border-color .2s;display:flex;align-items:center;gap:12px;}
 .gcard:active,.gcard.active{border-color:var(--accent);}
-.gcard-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;border:2px solid #fff;box-shadow:0 0 0 1.5px rgba(0,0,0,.15);}
+.gcard-thumb-wrap{position:relative;flex-shrink:0;}
+.gcard-thumb{width:46px;height:46px;border-radius:12px;background-size:cover;background-position:center;background-color:#e8e2d4;}
+.gcard-ring-dot{position:absolute;bottom:-2px;right:-2px;width:12px;height:12px;border-radius:50%;border:2px solid #fff;}
 .gcard-body{flex:1;min-width:0;}
 .gcard-name{font-size:13px;font-weight:500;line-height:1.3;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.gcard-meta{font-size:11px;color:var(--muted);display:flex;gap:6px;align-items:center;}
+.gcard-meta{font-size:11px;color:var(--muted);display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
 .dist-badge{font-size:10px;background:#E8F4FF;color:#1860A0;padding:1px 6px;border-radius:8px;font-weight:500;}
-.detail{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--card);border-radius:20px 20px 0 0;box-shadow:0 -4px 30px rgba(0,0,0,0.18);z-index:600;max-height:80vh;overflow-y:auto;}
+.pop-badge{font-size:10px;background:#FFF0E0;color:#B0600A;padding:1px 6px;border-radius:8px;font-weight:500;}
+
+.detail{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--card);border-radius:20px 20px 0 0;box-shadow:0 -4px 30px rgba(0,0,0,0.18);z-index:2200;max-height:82vh;overflow-y:auto;}
 .detail.open{display:block;}
 .detail-handle{padding:10px 0 4px;display:flex;justify-content:center;}
-.detail-inner{padding:4px 18px 28px;}
+.detail-photo{width:100%;height:150px;background-size:cover;background-position:center;background-color:#e8e2d4;}
+.detail-inner{padding:14px 18px 28px;position:relative;}
 .dbadge{font-size:11px;font-weight:500;padding:3px 10px;border-radius:10px;display:inline-block;margin-bottom:8px;}
 .detail-name{font-family:'Playfair Display',serif;font-size:20px;line-height:1.25;margin-bottom:2px;}
 .detail-sub{font-size:13px;color:var(--muted);margin-bottom:4px;}
-.detail-rating{font-size:13px;color:#B07010;margin-bottom:12px;}
+.detail-rating{font-size:13px;color:#B07010;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
 .detail-row{display:flex;align-items:flex-start;gap:10px;font-size:13px;margin-bottom:6px;}
 .detail-row .ico{font-size:15px;flex-shrink:0;margin-top:1px;}
 .hours-toggle{font-size:12px;color:var(--accent);cursor:pointer;margin:4px 0 6px;display:block;}
@@ -73,15 +84,32 @@ body{font-family:'DM Sans',sans-serif;color:var(--dark);display:flex;flex-direct
 .dir-input{width:100%;padding:11px 14px;border-radius:12px;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;margin-bottom:10px;color:var(--dark);}
 .dir-input:focus{border-color:var(--accent);}
 .btn-dir{width:100%;padding:13px;border-radius:12px;border:none;background:var(--accent);color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
-.btn-close-d{float:right;background:var(--cream);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;color:var(--muted);margin-bottom:10px;}
-.overlay{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.25);}
+.btn-close-d{position:absolute;top:12px;right:14px;background:rgba(255,255,255,.85);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;color:var(--dark);z-index:2;}
+.overlay{display:none;position:fixed;inset:0;z-index:2100;background:rgba(0,0,0,.25);}
 .overlay.open{display:block;}
-.fab-loc{position:fixed;right:14px;z-index:300;width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.13);border:none;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;transition:background .15s;}
+
+.fab-loc{position:fixed;right:14px;bottom:158px;z-index:2000;width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.13);border:none;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;transition:background .15s;}
 .fab-loc:active{background:#fff3ee;}
+
+.highlight-card{position:fixed;left:12px;right:12px;bottom:78px;z-index:2010;background:#fff;border-radius:16px;padding:8px;display:flex;align-items:center;gap:10px;box-shadow:0 6px 20px rgba(0,0,0,.18);cursor:pointer;}
+.hc-photo{width:44px;height:44px;border-radius:12px;background-size:cover;background-position:center;background-color:#e8e2d4;flex-shrink:0;border:2px solid var(--cream);}
+.hc-body{flex:1;min-width:0;}
+.hc-title{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hc-sub{font-size:11px;color:var(--muted);}
+.hc-chev{font-size:20px;color:var(--muted);flex-shrink:0;}
+
+.bottom-nav{position:fixed;left:12px;right:12px;bottom:12px;z-index:2020;background:var(--dark);border-radius:20px;display:flex;padding:6px;box-shadow:0 6px 24px rgba(0,0,0,.25);}
+.nav-btn{flex:1;background:none;border:none;color:rgba(255,255,255,.55);display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:10px;cursor:pointer;transition:all .2s;}
+.nav-btn .nav-ico{font-size:17px;}
+.nav-btn.active{background:var(--accent);color:#fff;}
+
 .loading{position:fixed;inset:0;background:var(--dark);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s;}
 .loading.done{opacity:0;pointer-events:none;}
-.loading-logo{font-family:'Playfair Display',serif;font-size:32px;color:#fff;margin-bottom:6px;}
-.loading-logo span{color:var(--accent);}
+.loading-the{font-family:'Playfair Display',serif;font-size:20px;font-style:italic;color:rgba(255,255,255,.85);line-height:1;}
+.loading-logo{font-family:'Playfair Display',serif;font-weight:700;font-size:46px;color:#fff;line-height:1.02;text-align:center;margin-bottom:10px;}
+.loading-rule{width:130px;height:1px;background:rgba(255,255,255,.5);margin:2px 0 10px;}
+.loading-tagline{font-size:10px;letter-spacing:1.5px;color:rgba(255,255,255,.6);text-transform:uppercase;margin-bottom:20px;}
+.loading-tagline b{color:var(--accent);font-weight:500;}
 .loading-sub{font-size:13px;color:rgba(255,255,255,.4);margin-bottom:30px;}
 .spinner{width:28px;height:28px;border:3px solid rgba(255,255,255,.15);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
@@ -93,13 +121,16 @@ body{font-family:'DM Sans',sans-serif;color:var(--dark);display:flex;flex-direct
 <body>
 
 <div class="loading" id="loading">
-  <div class="loading-logo">Artsy <span>Places</span></div>
+  <div class="loading-the">The</div>
+  <div class="loading-logo">Art<br>Walk</div>
+  <div class="loading-rule"></div>
+  <div class="loading-tagline">Art Galleries <b>&bull;</b> Exhibitions <b>&bull;</b> Open Calls</div>
   <div class="loading-sub">Finding galleries near you…</div>
   <div class="spinner"></div>
 </div>
 
 <div class="topbar">
-  <div class="logo">Artsy <span>Places</span></div>
+  <div class="logo">The Art <span>Walk</span></div>
   <div class="search-wrap">
     <span class="search-icon">🔍</span>
     <input type="text" id="searchInput" placeholder="Search galleries, areas…" oninput="filterGalleries()">
@@ -116,28 +147,48 @@ body{font-family:'DM Sans',sans-serif;color:var(--dark);display:flex;flex-direct
   <button class="fpill" onclick="setFilter('Africa',this)">🌍 Africa</button>
 </div>
 
-<div id="map"></div>
-<button class="fab-loc" id="fabLoc" style="bottom:220px;" onclick="goToMyLocation()">📍</button>
-
-<div class="sheet half" id="sheet">
-  <div class="sheet-handle-row" onclick="toggleSheet()"><div class="handle"></div></div>
-  <div class="sheet-title-row">
-    <div class="sheet-title">Art Galleries</div>
-    <span class="count-pill" id="countBadge">0</span>
+<div class="view-container">
+  <div id="mapView" class="view active">
+    <div id="map"></div>
   </div>
-  <div class="nearby-note" id="nearbyNote"></div>
-  <div class="glist" id="galleryList"></div>
+  <div id="listView" class="view">
+    <div class="list-header">
+      <div class="list-title">Art Galleries</div>
+      <span class="count-pill" id="countBadge">0</span>
+    </div>
+    <div class="nearby-note" id="nearbyNote"></div>
+    <div class="glist" id="galleryList"></div>
+  </div>
+</div>
+
+<button class="fab-loc" id="fabLoc" onclick="goToMyLocation()">📍</button>
+
+<div class="highlight-card" id="highlightCard" onclick="onHighlightTap()">
+  <div class="hc-photo" id="hcPhoto"></div>
+  <div class="hc-body">
+    <div class="hc-title" id="hcTitle">Loading galleries…</div>
+    <div class="hc-sub" id="hcSub"></div>
+  </div>
+  <div class="hc-chev">›</div>
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-btn active" id="navMap" onclick="switchView('map')"><span class="nav-ico">🗺️</span><span>Map</span></button>
+  <button class="nav-btn" id="navList" onclick="switchView('list')"><span class="nav-ico">📋</span><span>List</span></button>
+  <button class="nav-btn" onclick="openExternal('whatsapp')"><span class="nav-ico">💬</span><span>Community</span></button>
+  <button class="nav-btn" onclick="openExternal('instagram')"><span class="nav-ico">📸</span><span>Instagram</span></button>
 </div>
 
 <div class="overlay" id="overlay" onclick="closeDetail()"></div>
 <div class="detail" id="detailSheet">
   <div class="detail-handle"><div class="handle"></div></div>
+  <div class="detail-photo" id="dPhoto"></div>
   <div class="detail-inner">
     <button class="btn-close-d" onclick="closeDetail()">✕</button>
     <div class="dbadge" id="dRegion"></div>
     <div class="detail-name" id="dName"></div>
     <div class="detail-sub" id="dSub"></div>
-    <div class="detail-rating" id="dRating"></div>
+    <div class="detail-rating"><span id="dRating"></span><span class="pop-badge" id="dPopBadge" style="display:none;">🔥 Popular</span></div>
     <div class="detail-row"><span class="ico">📍</span><span id="dAddress"></span></div>
     <span class="hours-toggle" onclick="toggleHours()">🕐 Show opening hours</span>
     <div class="hours-list" id="dHours"></div>
@@ -268,11 +319,17 @@ const galleries=[
 ];
 
 const regionColors={Delhi:"#C4622D",Europe:"#2050C0",Americas:"#3A7A20","Asia Pacific":"#A06010","Middle East":"#7040B0",Africa:"#207050"};
-const badgeClass={Delhi:"bi",Europe:"be",Americas:"ba","Asia Pacific":"bap","Middle East":"bm",Africa:"baf"};
 const badgeStyle={Delhi:"background:#FFF0E8;color:#C4622D",Europe:"background:#E8F0FF;color:#2050C0",Americas:"background:#EDFEE8;color:#306020","Asia Pacific":"background:#FFF8E0;color:#906010","Middle East":"background:#F5E8FF;color:#6030A0",Africa:"background:#E8FFF5;color:#20705A"};
 
-let map,markers=[],userMarker=null,routeLine=null,travelMode="driving",activeFilter="all",activeIdx=null,sheetState="half";
-let userLat=null,userLng=null;
+// NOTE: real per-gallery photos aren't in the dataset yet, so we fall back to a
+// deterministic placeholder image (seeded by gallery name) until real photo URLs
+// are added via an optional `photo` field on each gallery object.
+function photoUrl(g){
+  return g.photo || `https://picsum.photos/seed/${encodeURIComponent(g.name)}/200/200`;
+}
+
+let map,markers=[],userMarker=null,routeLine=null,travelMode="driving",activeFilter="all",activeIdx=null;
+let userLat=null,userLng=null,currentList=galleries,currentView="map",highlightIdx=null;
 
 function distKm(lat1,lng1,lat2,lng2){
   const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLng=(lng2-lng1)*Math.PI/180;
@@ -288,17 +345,17 @@ function initMap(){
   map=L.map("map",{zoomControl:false}).setView([28.57,77.21],12);
   L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{attribution:'© OpenStreetMap © Carto',maxZoom:19}).addTo(map);
   galleries.forEach((g,i)=>{
-    const m=L.marker([g.lat,g.lng],{icon:makeIcon(g.region,false)}).addTo(map);
+    const m=L.marker([g.lat,g.lng],{icon:makeIcon(g.region,false,photoUrl(g))}).addTo(map);
     m.on("click",()=>openDetail(i));
     markers.push(m);
   });
-  renderList(galleries);
+  filterGalleries();
   getUserLocation(true);
 }
 
-function makeIcon(region,big){
-  const c=regionColors[region]||"#888",s=big?16:11;
-  return L.divIcon({className:"",html:`<div style="width:${s}px;height:${s}px;background:${c};border:${big?3:2}px solid #fff;border-radius:50%;box-shadow:0 1px 5px rgba(0,0,0,.3)"></div>`,iconSize:[s,s],iconAnchor:[s/2,s/2]});
+function makeIcon(region,big,photo){
+  const c=regionColors[region]||"#888",s=big?58:44,r=big?16:12;
+  return L.divIcon({className:"",html:`<div style="width:${s}px;height:${s}px;border-radius:${r}px;background:url('${photo}') center/cover #ddd;border:${big?3:2.5}px solid ${c};box-shadow:0 3px 10px rgba(0,0,0,.35);"></div>`,iconSize:[s,s],iconAnchor:[s/2,s/2]});
 }
 
 function getUserLocation(onLoad){
@@ -335,11 +392,47 @@ function placeUserMarker(lat,lng){
   userMarker=L.marker([lat,lng],{icon:L.divIcon({className:"",html:'<div class="user-pulse"></div>',iconSize:[16,16],iconAnchor:[8,8]})}).addTo(map);
 }
 
-function toggleSheet(){
-  const s=document.getElementById("sheet");
-  sheetState=sheetState==="half"?"full":sheetState==="full"?"collapsed":"half";
-  s.className="sheet "+sheetState;
-  document.getElementById("fabLoc").style.bottom=sheetState==="full"?"calc(80vh + 14px)":sheetState==="half"?"220px":"80px";
+function switchView(v){
+  currentView=v;
+  document.getElementById("mapView").classList.toggle("active",v==="map");
+  document.getElementById("listView").classList.toggle("active",v==="list");
+  document.getElementById("navMap").classList.toggle("active",v==="map");
+  document.getElementById("navList").classList.toggle("active",v==="list");
+  document.getElementById("fabLoc").style.display=v==="map"?"flex":"none";
+  updateHighlightCard();
+  if(v==="map")setTimeout(()=>map.invalidateSize(),80);
+}
+
+function openExternal(kind){
+  const urls={
+    instagram:"https://www.instagram.com/theartwalk.in/",
+    // TODO: replace with your real WhatsApp group invite link (chat.whatsapp.com/...)
+    whatsapp:"https://chat.whatsapp.com/REPLACE_WITH_YOUR_INVITE_LINK"
+  };
+  window.open(urls[kind],"_blank");
+}
+
+function updateHighlightCard(){
+  const card=document.getElementById("highlightCard");
+  const list=currentList;
+  if(currentView!=="map"||!list.length){card.style.display="none";return;}
+  card.style.display="flex";
+  let g,subtext;
+  if(userLat!==null){
+    g=list.slice().sort((a,b)=>distKm(userLat,userLng,a.lat,a.lng)-distKm(userLat,userLng,b.lat,b.lng))[0];
+    subtext=fmtDist(distKm(userLat,userLng,g.lat,g.lng))+" away · tap for directions";
+  }else{
+    g=list[Math.floor(Math.random()*list.length)];
+    subtext="Enable location to find galleries near you";
+  }
+  document.getElementById("hcPhoto").style.backgroundImage=`url('${photoUrl(g)}')`;
+  document.getElementById("hcTitle").textContent=g.name;
+  document.getElementById("hcSub").textContent=subtext;
+  highlightIdx=galleries.indexOf(g);
+}
+
+function onHighlightTap(){
+  if(highlightIdx!==null)openDetail(highlightIdx);
 }
 
 function renderList(list){
@@ -359,14 +452,19 @@ function renderList(list){
   el.innerHTML=list.map(g=>{
     const i=galleries.indexOf(g);
     const dist=userLat!==null?fmtDist(distKm(userLat,userLng,g.lat,g.lng)):null;
+    const popular=g.rating>=4.8?'<span class="pop-badge">🔥 Popular</span>':"";
     return`<div class="gcard" id="card-${i}" onclick="openDetail(${i})">
-      <div class="gcard-dot" style="background:${regionColors[g.region]||'#888'}"></div>
+      <div class="gcard-thumb-wrap">
+        <div class="gcard-thumb" style="background-image:url('${photoUrl(g)}')"></div>
+        <div class="gcard-ring-dot" style="background:${regionColors[g.region]||'#888'}"></div>
+      </div>
       <div class="gcard-body">
         <div class="gcard-name">${g.name}</div>
         <div class="gcard-meta">
           <span>${g.area}</span>
           <span>⭐ ${g.rating}</span>
           ${dist?`<span class="dist-badge">📍 ${dist}</span>`:""}
+          ${popular}
         </div>
       </div>
     </div>`;
@@ -378,25 +476,24 @@ function openDetail(i){
   document.querySelectorAll(".gcard").forEach(c=>c.classList.remove("active"));
   const card=document.getElementById(`card-${i}`);
   if(card){card.classList.add("active");card.scrollIntoView({behavior:"smooth",block:"nearest"});}
+  document.getElementById("dPhoto").style.backgroundImage=`url('${photoUrl(g)}')`;
   document.getElementById("dRegion").textContent=g.region;
   document.getElementById("dRegion").style=badgeStyle[g.region]||"";
   document.getElementById("dName").textContent=g.name;
   const dist=userLat!==null?" · "+fmtDist(distKm(userLat,userLng,g.lat,g.lng))+" away":"";
   document.getElementById("dSub").textContent=`${g.area} · ${g.city}${dist}`;
   document.getElementById("dRating").textContent=`⭐ ${g.rating} rating`;
+  document.getElementById("dPopBadge").style.display=g.rating>=4.8?"inline-block":"none";
   document.getElementById("dAddress").textContent=g.address;
   const hoursEl=document.getElementById("dHours");
   hoursEl.innerHTML=g.hours&&g.hours.length?g.hours.join("<br>"):"Hours not available";
   hoursEl.classList.remove("open");
   document.querySelector(".hours-toggle").textContent="🕐 Show opening hours";
-  markers.forEach((m,idx)=>m.setIcon(makeIcon(galleries[idx].region,false)));
-  markers[i].setIcon(makeIcon(g.region,true));
+  markers.forEach((m,idx)=>m.setIcon(makeIcon(galleries[idx].region,false,photoUrl(galleries[idx]))));
+  markers[i].setIcon(makeIcon(g.region,true,photoUrl(g)));
   map.flyTo([g.lat,g.lng],16,{duration:1});
   document.getElementById("detailSheet").classList.add("open");
   document.getElementById("overlay").classList.add("open");
-  document.getElementById("sheet").className="sheet collapsed";
-  sheetState="collapsed";
-  document.getElementById("fabLoc").style.bottom="80px";
 }
 
 function toggleHours(){
@@ -409,12 +506,9 @@ function toggleHours(){
 function closeDetail(){
   document.getElementById("detailSheet").classList.remove("open");
   document.getElementById("overlay").classList.remove("open");
-  if(activeIdx!==null)markers[activeIdx].setIcon(makeIcon(galleries[activeIdx].region,false));
+  if(activeIdx!==null)markers[activeIdx].setIcon(makeIcon(galleries[activeIdx].region,false,photoUrl(galleries[activeIdx])));
   activeIdx=null;
   if(routeLine){map.removeLayer(routeLine);routeLine=null;}
-  document.getElementById("sheet").className="sheet half";
-  sheetState="half";
-  document.getElementById("fabLoc").style.bottom="220px";
 }
 
 function setMode(mode,btn){
@@ -458,6 +552,7 @@ function filterGalleries(){
     const ms=!q||g.name.toLowerCase().includes(q)||g.city.toLowerCase().includes(q)||g.area.toLowerCase().includes(q);
     return mr&&ms;
   });
+  currentList=filtered;
   markers.forEach((m,i)=>{
     const g=galleries[i];
     const mr=activeFilter==="all"||g.region===activeFilter;
@@ -465,6 +560,7 @@ function filterGalleries(){
     mr&&ms?(!map.hasLayer(m)&&m.addTo(map)):(map.hasLayer(m)&&map.removeLayer(m));
   });
   renderList(filtered);
+  updateHighlightCard();
 }
 
 initMap();
