@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="description" content="Discover 100+ art galleries across Delhi NCR and iconic galleries worldwide. Get directions, hours, and open calls with The Art Walk.">
-<meta property="og:title" content="The Art Walk — Delhi & World Art Galleries">
-<meta property="og:description" content="Discover 100+ art galleries across Delhi NCR and iconic galleries worldwide.">
+<meta name="description" content="Discover art galleries across Delhi NCR, Mumbai, Bangalore, Hyderabad, Chennai and Kerala. Get directions, hours, and open calls with The Art Walk.">
+<meta property="og:title" content="The Art Walk — Art Galleries Across India">
+<meta property="og:description" content="Discover art galleries across Delhi NCR, Mumbai, Bangalore, Hyderabad, Chennai and Kerala.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://map.theartwalk.in/">
 <!-- Placeholder favicon: brand monogram in your palette, until the real logo file is uploaded to the repo (see below) -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><circle cx=%2232%22 cy=%2232%22 r=%2232%22 fill=%22%23F4E8D8%22/><text x=%2232%22 y=%2244%22 font-family=%22Georgia,serif%22 font-weight=%22700%22 font-size=%2236%22 text-anchor=%22middle%22 fill=%22%230B0A08%22>A</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><circle cx=%2232%22 cy=%2232%22 r=%2232%22 fill=%22%23F4E8D8%22/><text x=%2232%22 y=%2244%22 font-family=%22Georgia,serif%22 font-weight=%22700%22 font-size=%2236%22 text-anchor=%22middle%22 fill=%22%230A0A0A%22>A</text></svg>">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VW42KRS81Z"></script>
 <script>
@@ -18,13 +18,13 @@
   gtag('js', new Date());
   gtag('config', 'G-VW42KRS81Z');
 </script>
-<title>The Art Walk — Delhi & World Art Galleries</title>
+<title>The Art Walk — Art Galleries Across India</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{--cream:#F4E8D8;--dark:#0B0A08;--accent:#A8501F;--muted:#9C8D7A;--card:#fff;--border:#E5D8C6;}
+:root{--cream:#F4E8D8;--dark:#0A0A0A;--accent:#9C4E22;--muted:#9C8D7A;--card:#fff;--border:#E5D8C6;}
 html,body{height:100%;width:100%;overflow:hidden;}
 body{font-family:'DM Sans',sans-serif;color:var(--dark);display:flex;flex-direction:column;background:var(--cream);}
 .topbar{background:var(--dark);padding:10px 14px;display:flex;align-items:center;gap:10px;z-index:500;flex-shrink:0;}
@@ -140,11 +140,11 @@ body{font-family:'DM Sans',sans-serif;color:var(--dark);display:flex;flex-direct
 <div class="filters">
   <button class="fpill active" onclick="setFilter('all',this)">All</button>
   <button class="fpill" onclick="setFilter('Delhi',this)">🎨 Delhi</button>
-  <button class="fpill" onclick="setFilter('Europe',this)">🇪🇺 Europe</button>
-  <button class="fpill" onclick="setFilter('Americas',this)">🌎 Americas</button>
-  <button class="fpill" onclick="setFilter('Asia Pacific',this)">🌏 Asia Pacific</button>
-  <button class="fpill" onclick="setFilter('Middle East',this)">🌙 Middle East</button>
-  <button class="fpill" onclick="setFilter('Africa',this)">🌍 Africa</button>
+  <button class="fpill" onclick="setFilter('Mumbai',this)">🌊 Mumbai</button>
+  <button class="fpill" onclick="setFilter('Bangalore',this)">🌳 Bangalore</button>
+  <button class="fpill" onclick="setFilter('Hyderabad',this)">🕌 Hyderabad</button>
+  <button class="fpill" onclick="setFilter('Chennai',this)">🏖️ Chennai</button>
+  <button class="fpill" onclick="setFilter('Kerala',this)">🌴 Kerala</button>
 </div>
 
 <div class="view-container">
@@ -286,40 +286,72 @@ const galleries=[
   {name:"Sanchit Art",area:"Saket",city:"New Delhi",region:"Delhi",lat:28.5283,lng:77.2206,address:"167 DLF South Court Mall, Saket",rating:4.1,hours:["Mon–Sat: 10am–6pm","Sun: Closed"]},
   {name:"KHOJ International Artists Association",area:"Khirkee Extension",city:"New Delhi",region:"Delhi",lat:28.5335,lng:77.2098,address:"S-17, Khirkee Extension",rating:4.4,hours:["Mon–Sat: 11am–6pm","Sun: Closed"]},
   // ══════════════════════════════════
-  // WORLD GALLERIES
+  // MUMBAI
   // ══════════════════════════════════
-  {name:"The Louvre",area:"1st Arr.",city:"Paris",region:"Europe",lat:48.8606,lng:2.3376,address:"Rue de Rivoli, 75001 Paris",rating:4.8,hours:["Mon,Wed–Sun: 9am–6pm","Tue: Closed","Wed,Fri: until 9:45pm"]},
-  {name:"Musée d'Orsay",area:"7th Arr.",city:"Paris",region:"Europe",lat:48.8600,lng:2.3266,address:"1 Rue de la Légion d'Honneur, Paris",rating:4.8,hours:["Mon: Closed","Tue–Sun: 9:30am–6pm","Thu: until 9:45pm"]},
-  {name:"Centre Pompidou",area:"4th Arr.",city:"Paris",region:"Europe",lat:48.8606,lng:2.3522,address:"Place Georges-Pompidou, 75004 Paris",rating:4.5,hours:["Mon,Wed–Sun: 11am–9pm","Tue: Closed"]},
-  {name:"Tate Modern",area:"Southbank",city:"London",region:"Europe",lat:51.5076,lng:-0.0994,address:"Bankside, London SE1 9TG",rating:4.6,hours:["Mon–Sun: 10am–6pm","Fri–Sat: 10am–10pm"]},
-  {name:"National Gallery London",area:"Trafalgar Square",city:"London",region:"Europe",lat:51.5089,lng:-0.1283,address:"Trafalgar Square, London WC2N 5DN",rating:4.7,hours:["Mon–Sun: 10am–6pm","Fri: 10am–9pm"]},
-  {name:"Uffizi Gallery",area:"Historic Centre",city:"Florence",region:"Europe",lat:43.7677,lng:11.2553,address:"Piazzale degli Uffizi 6, Florence",rating:4.7,hours:["Mon: Closed","Tue–Sun: 8:15am–6:50pm"]},
-  {name:"Vatican Museums",area:"Vatican City",city:"Rome",region:"Europe",lat:41.9065,lng:12.4536,address:"Viale Vaticano, Vatican City",rating:4.7,hours:["Mon: Closed","Tue–Sun: 9am–6pm"]},
-  {name:"Museo del Prado",area:"Retiro",city:"Madrid",region:"Europe",lat:40.4138,lng:-3.6921,address:"C. de Ruiz de Alarcón 23, Madrid",rating:4.8,hours:["Mon–Sat: 10am–8pm","Sun: 10am–7pm"]},
-  {name:"Guggenheim Bilbao",area:"Abandoibarra",city:"Bilbao",region:"Europe",lat:43.2688,lng:-2.9339,address:"Abandoibarra Etorb. 2, Bilbao",rating:4.7,hours:["Mon: Closed","Tue–Sun: 10am–8pm"]},
-  {name:"Rijksmuseum",area:"Museum Quarter",city:"Amsterdam",region:"Europe",lat:52.3600,lng:4.8852,address:"Museumstraat 1, Amsterdam",rating:4.8,hours:["Mon–Sun: 9am–5pm"]},
-  {name:"Van Gogh Museum",area:"Museum Quarter",city:"Amsterdam",region:"Europe",lat:52.3584,lng:4.8811,address:"Museumplein 6, Amsterdam",rating:4.7,hours:["Mon–Sun: 9am–5pm","Fri: 9am–9pm"]},
-  {name:"State Hermitage Museum",area:"Palace Square",city:"St Petersburg",region:"Europe",lat:59.9398,lng:30.3146,address:"Palace Square 2, St Petersburg",rating:4.8,hours:["Mon: Closed","Tue,Thu,Sat–Sun: 10:30am–6pm","Wed,Fri: 10:30am–9pm"]},
-  {name:"MoMA",area:"Midtown",city:"New York",region:"Americas",lat:40.7614,lng:-73.9777,address:"11 W 53rd St, New York, NY 10019",rating:4.6,hours:["Mon,Wed,Thu,Sat–Sun: 10:30am–5:30pm","Fri: 10:30am–9pm","Tue: Closed"]},
-  {name:"The Metropolitan Museum of Art",area:"Upper East Side",city:"New York",region:"Americas",lat:40.7794,lng:-73.9632,address:"1000 5th Ave, New York, NY 10028",rating:4.8,hours:["Mon,Tue,Thu,Sun: 10am–5pm","Fri–Sat: 10am–9pm","Wed: Closed"]},
-  {name:"Art Institute of Chicago",area:"Millennium Park",city:"Chicago",region:"Americas",lat:41.8796,lng:-87.6237,address:"111 S Michigan Ave, Chicago, IL",rating:4.8,hours:["Mon,Wed–Sun: 11am–5pm","Tue: Closed","Thu: 11am–8pm"]},
-  {name:"Getty Center",area:"Brentwood",city:"Los Angeles",region:"Americas",lat:34.0780,lng:-118.4741,address:"1200 Getty Center Dr, Los Angeles",rating:4.8,hours:["Mon: Closed","Tue–Fri,Sun: 10am–5:30pm","Sat: 10am–9pm"]},
-  {name:"São Paulo Museum of Art",area:"Paulista",city:"São Paulo",region:"Americas",lat:-23.5613,lng:-46.6558,address:"Av. Paulista 1578, São Paulo",rating:4.6,hours:["Mon: Closed","Tue–Sun: 10am–6pm","Thu: 10am–8pm"]},
-  {name:"Tokyo National Museum",area:"Ueno",city:"Tokyo",region:"Asia Pacific",lat:35.7187,lng:139.7763,address:"13-9 Uenokoen, Taito City, Tokyo",rating:4.6,hours:["Mon: Closed","Tue–Sun: 9:30am–5pm","Fri–Sat: 9:30am–8pm"]},
-  {name:"teamLab Planets",area:"Toyosu",city:"Tokyo",region:"Asia Pacific",lat:35.6476,lng:139.7952,address:"6-1-16 Toyosu, Koto City, Tokyo",rating:4.7,hours:["Mon–Sun: 9am–9pm"]},
-  {name:"National Museum of Korea",area:"Yongsan",city:"Seoul",region:"Asia Pacific",lat:37.5237,lng:126.9806,address:"137 Seobinggo-ro, Yongsan-gu, Seoul",rating:4.7,hours:["Mon,Wed,Thu,Sat: 10am–6pm","Tue: Closed","Fri,Sat: 10am–9pm"]},
-  {name:"M+ Museum",area:"West Kowloon",city:"Hong Kong",region:"Asia Pacific",lat:22.3035,lng:114.1597,address:"38 Museum Dr, West Kowloon, Hong Kong",rating:4.5,hours:["Mon: Closed","Tue–Sun: 10am–6pm","Fri: 10am–10pm"]},
-  {name:"National Gallery Singapore",area:"City Hall",city:"Singapore",region:"Asia Pacific",lat:1.2896,lng:103.8513,address:"1 St Andrew's Rd, Singapore",rating:4.6,hours:["Mon–Sun: 10am–7pm","Fri: 10am–9pm"]},
-  {name:"Art Gallery of New South Wales",area:"The Domain",city:"Sydney",region:"Asia Pacific",lat:-33.8688,lng:151.2170,address:"Art Gallery Rd, The Domain, Sydney",rating:4.6,hours:["Mon–Sun: 10am–5pm","Wed: 10am–10pm"]},
-  {name:"Louvre Abu Dhabi",area:"Saadiyat Island",city:"Abu Dhabi",region:"Middle East",lat:24.5338,lng:54.3981,address:"Saadiyat Cultural District, Abu Dhabi",rating:4.7,hours:["Mon: Closed","Tue–Sun: 10am–6:30pm","Thu–Sat: 10am–8:30pm"]},
-  {name:"Museum of Islamic Art",area:"Corniche",city:"Doha",region:"Middle East",lat:25.2948,lng:51.5378,address:"Al Corniche St, Doha, Qatar",rating:4.7,hours:["Mon–Thu,Sat: 9am–5pm","Fri: 1:30pm–8:30pm","Sun: Closed"]},
-  {name:"Istanbul Modern",area:"Beyoglu",city:"Istanbul",region:"Middle East",lat:41.0290,lng:28.9845,address:"Meclis-i Mebusan Cd, Beyoglu, Istanbul",rating:4.5,hours:["Mon: Closed","Tue–Sun: 10am–6pm","Thu: 10am–8pm"]},
-  {name:"Zeitz MOCAA",area:"V&A Waterfront",city:"Cape Town",region:"Africa",lat:-33.9066,lng:18.4215,address:"V&A Waterfront, Cape Town",rating:4.5,hours:["Mon: Closed","Tue–Sun: 10am–6pm","Fri: 10am–9pm"]},
-  {name:"Egyptian Museum Cairo",area:"Tahrir Square",city:"Cairo",region:"Africa",lat:30.0478,lng:31.2336,address:"Tahrir Square, Cairo",rating:4.6,hours:["Mon–Sun: 9am–5pm"]},
+  {name:"Jehangir Art Gallery",area:"Kala Ghoda",city:"Mumbai",region:"Mumbai",lat:18.9282,lng:72.8322,address:"161B, Mahatma Gandhi Road, Kala Ghoda, Fort, Mumbai 400021",rating:4.5,hours:["Mon–Sun: 11am–7pm"]},
+  {name:"Chemould Prescott Road",area:"Fort",city:"Mumbai",region:"Mumbai",lat:18.9327,lng:72.8347,address:"3rd Floor, Queens Mansion, G Talwatkar Marg, Fort",rating:4.6,hours:["Mon–Sat: 10am–6pm","Sun: Closed"]},
+  {name:"Chatterjee & Lal",area:"Kala Ghoda",city:"Mumbai",region:"Mumbai",lat:18.9280,lng:72.8320,address:"161B, Mahatma Gandhi Road, Kala Ghoda, Fort",rating:4.5,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"Abhay Maskara Art Gallery",area:"Kala Ghoda",city:"Mumbai",region:"Mumbai",lat:18.9286,lng:72.8316,address:"22/26 K. Dubash Marg, Rampart Row, Kala Ghoda",rating:4.3,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"Fulcrum",area:"Kala Ghoda",city:"Mumbai",region:"Mumbai",lat:18.9299,lng:72.8321,address:"Great Western Building, 130/132 Shahid Bhagat Singh Rd, Kala Ghoda",rating:4.4,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"Artisans' Centre",area:"Kala Ghoda",city:"Mumbai",region:"Mumbai",lat:18.9276,lng:72.8318,address:"52-56, V.B. Gandhi Marg, Kala Ghoda",rating:4.5,hours:["Mon–Sun: 10:30am–6:30pm"]},
+  {name:"Tasveer",area:"Colaba",city:"Mumbai",region:"Mumbai",lat:18.9086,lng:72.8113,address:"Kamal Mansion, 1st Floor, Arthur Bunder Road, Colaba",rating:4.4,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"Project 88",area:"Colaba",city:"Mumbai",region:"Mumbai",lat:18.9095,lng:72.8125,address:"6/7 Third Pasta Lane, Colaba",rating:4.3,hours:["Tue–Sat: 11am–7pm","Mon,Sun: Closed"]},
+  {name:"Experimenter Mumbai",area:"Colaba",city:"Mumbai",region:"Mumbai",lat:18.9143,lng:72.8158,address:"Sunny House, Wodehouse Road, Colaba",rating:4.5,hours:["Tue–Sat: 11am–7pm","Mon,Sun: Closed"]},
+  {name:"Nature Morte Mumbai",area:"Colaba",city:"Mumbai",region:"Mumbai",lat:18.9110,lng:72.8130,address:"Colaba, Mumbai",rating:4.4,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"TARQ",area:"Colaba",city:"Mumbai",region:"Mumbai",lat:18.9218,lng:72.8322,address:"Dhanraj Mahal, Chhatrapati Shivaji Maharaj Marg, Apollo Bunder, Colaba",rating:4.6,hours:["Tue–Sat: 11am–6pm","Mon,Sun: Closed"]},
+  {name:"Sakshi Gallery",area:"Colaba",city:"Mumbai",region:"Mumbai",lat:18.9095,lng:72.8120,address:"Grants Building, 3rd Floor, Arthur Bunder Road, Colaba",rating:4.5,hours:["Mon–Sat: 11am–6:30pm","Sun: Closed"]},
+  {name:"Galerie ISA",area:"Ballard Estate",city:"Mumbai",region:"Mumbai",lat:18.9457,lng:72.8397,address:"Ballard Estate, Fort",rating:4.4,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"Galerie Mirchandani + Steinruecke",area:"Lower Parel",city:"Mumbai",region:"Mumbai",lat:19.0044,lng:72.8300,address:"Sunmill Compound, Lower Parel",rating:4.6,hours:["Mon: Closed","Tue–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"Gallery Maskara",area:"Mazgaon",city:"Mumbai",region:"Mumbai",lat:18.9634,lng:72.8433,address:"Mazgaon, Mumbai (former grain warehouse)",rating:4.3,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  // ══════════════════════════════════
+  // BANGALORE
+  // ══════════════════════════════════
+  {name:"Gallery Sumukha",area:"Wilson Garden",city:"Bangalore",region:"Bangalore",lat:12.9515,lng:77.6009,address:"24/10, BTS Depot Road, Wilson Garden",rating:4.5,hours:["Mon–Sat: 10:30am–6pm","Sun: Closed"]},
+  {name:"Sublime Galleria",area:"UB City",city:"Bangalore",region:"Bangalore",lat:12.9716,lng:77.5951,address:"801, 8th Floor, UB City, Vittal Mallya Road",rating:4.4,hours:["Mon–Sun: 11am–8pm"]},
+  {name:"Mahua Art Gallery",area:"Sadashiva Nagar",city:"Bangalore",region:"Bangalore",lat:13.0060,lng:77.5820,address:"344, 4th Main Rd, Armane Nagar, Sadashiva Nagar",rating:4.3,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"1 Shanthi Road Studio Gallery",area:"Shanti Nagar",city:"Bangalore",region:"Bangalore",lat:12.9581,lng:77.5985,address:"1, Shanthi Rd, Bheemanna Garden, Shanti Nagar",rating:4.5,hours:["Mon–Sat: 11am–6pm","Sun: Closed"]},
+  {name:"Crimson – The Art Resource",area:"Cunningham Road",city:"Bangalore",region:"Bangalore",lat:12.9868,lng:77.5960,address:"The Hatworks Boulevard, 32 Cunningham Road",rating:4.4,hours:["Mon–Sat: 10:30am–6:30pm","Sun: Closed"]},
+  {name:"Gallery Time and Space",area:"Lavelle Road",city:"Bangalore",region:"Bangalore",lat:12.9701,lng:77.5990,address:"55 Lavelle Road",rating:4.4,hours:["Mon–Sat: 10:30am–6:30pm","Sun: Closed"]},
+  {name:"National Gallery of Modern Art, Bangalore",area:"Palace Road",city:"Bangalore",region:"Bangalore",lat:12.9989,lng:77.5921,address:"49, Manikyavelu Mansion, Palace Road",rating:4.6,hours:["Mon: Closed","Tue–Sun: 11am–6:30pm"]},
+  {name:"GALLERYSKE",area:"Langford Town",city:"Bangalore",region:"Bangalore",lat:12.9569,lng:77.6041,address:"2, Berlie Street, Langford Town",rating:4.5,hours:["Mon,Wed–Sat: 11am–7pm","Tue,Sun: Closed"]},
+  {name:"Venkatappa Art Gallery",area:"Cubbon Park",city:"Bangalore",region:"Bangalore",lat:12.9757,lng:77.5936,address:"Near Karnataka State Museum, Cubbon Park",rating:4.2,hours:["Mon–Sat: 10am–5pm","Sun: Closed"]},
+  {name:"Karnataka Chitrakala Parishath",area:"Kumara Krupa Road",city:"Bangalore",region:"Bangalore",lat:12.9924,lng:77.5836,address:"Kumara Krupa Road, Chitrakala Parishath Campus",rating:4.5,hours:["Mon–Sun: 10am–6pm"]},
+  // ══════════════════════════════════
+  // HYDERABAD
+  // ══════════════════════════════════
+  {name:"Kalakriti Art Gallery",area:"Banjara Hills",city:"Hyderabad",region:"Hyderabad",lat:17.4156,lng:78.4347,address:"Plot No. 8-2-465/1, Road No. 4, Banjara Hills",rating:4.5,hours:["Mon: Closed","Tue–Sun: 11am–7pm"]},
+  {name:"Shrishti Art Gallery",area:"Jubilee Hills",city:"Hyderabad",region:"Hyderabad",lat:17.4310,lng:78.4073,address:"Venkatagiri, Jubilee Hills, near Oaks Spa",rating:4.4,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"TS State Art Gallery (Alliance Française)",area:"Banjara Hills",city:"Hyderabad",region:"Hyderabad",lat:17.4160,lng:78.4380,address:"Alliance Française de Hyderabad, Banjara Hills",rating:4.3,hours:["Mon–Sat: 10am–6pm","Sun: Closed"]},
+  {name:"ICONART Gallery",area:"Banjara Hills",city:"Hyderabad",region:"Hyderabad",lat:17.4145,lng:78.4400,address:"Banjara Hills",rating:4.2,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"Alankritha Art Gallery",area:"Madhapur",city:"Hyderabad",region:"Hyderabad",lat:17.4483,lng:78.3915,address:"Madhapur",rating:4.2,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"Gallery Space",area:"Banjara Hills",city:"Hyderabad",region:"Hyderabad",lat:17.4133,lng:78.4410,address:"Banjara Hills",rating:4.3,hours:["Mon–Sat: 11am–7pm","Sun: Closed"]},
+  {name:"Muse Art Gallery",area:"Tank Bund",city:"Hyderabad",region:"Hyderabad",lat:17.4239,lng:78.4738,address:"Hyderabad Marriott & Convention Centre, Tank Bund Road",rating:4.3,hours:["Mon–Sun: 11am–7pm"]},
+  {name:"Deccan Art Gallery",area:"Hyderabad",city:"Hyderabad",region:"Hyderabad",lat:17.4065,lng:78.4772,address:"Hyderabad",rating:4.1,hours:["Hours vary — check ahead"]},
+  // ══════════════════════════════════
+  // CHENNAI
+  // ══════════════════════════════════
+  {name:"Apparao Galleries",area:"Nungambakkam",city:"Chennai",region:"Chennai",lat:13.0604,lng:80.2496,address:"No. 7, Wallace Gardens, 3rd Street, Nungambakkam",rating:4.5,hours:["Mon–Sat: 10:30am–6:30pm","Sun: Closed"]},
+  {name:"Ashvita's",area:"Mylapore",city:"Chennai",region:"Chennai",lat:13.0339,lng:80.2619,address:"Dr Radhakrishnan Salai, Mylapore",rating:4.4,hours:["Mon–Sun: 11am–7:30pm"]},
+  {name:"Forum Art Gallery",area:"Adyar",city:"Chennai",region:"Chennai",lat:13.0067,lng:80.2565,address:"57, 5th St, Padmanabha Nagar, Adyar",rating:4.4,hours:["Mon–Sat: 10:30am–6:30pm","Sun: Closed"]},
+  {name:"Focus Art Gallery",area:"Alwarpet",city:"Chennai",region:"Chennai",lat:13.0350,lng:80.2540,address:"11, Kasturi Estate, 2nd St, Alwarpet",rating:4.3,hours:["Mon–Sat: 10:30am–6:30pm","Sun: Closed"]},
+  {name:"Cholamandal Artists' Village",area:"Injambakkam",city:"Chennai",region:"Chennai",lat:12.9139,lng:80.2461,address:"Injambakkam, East Coast Road",rating:4.5,hours:["Mon–Sun: 9:30am–6:30pm"]},
+  {name:"Lalit Kala Akademi, Chennai",area:"Thousand Lights",city:"Chennai",region:"Chennai",lat:13.0625,lng:80.2497,address:"Greams Road, Thousand Lights West",rating:4.3,hours:["Mon–Sat: 10am–6pm","Sun: Closed"]},
+  {name:"DakshinaChitra",area:"Muttukadu",city:"Chennai",region:"Chennai",lat:12.8406,lng:80.2377,address:"East Coast Road, Muttukadu",rating:4.6,hours:["Mon: Closed","Tue–Sun: 10am–6pm"]},
+  {name:"Vinnyasa Art Gallery",area:"Chennai",city:"Chennai",region:"Chennai",lat:13.0500,lng:80.2500,address:"Chennai",rating:4.1,hours:["Hours vary — check ahead"]},
+  // ══════════════════════════════════
+  // KERALA
+  // ══════════════════════════════════
+  {name:"Kashi Art Café & Gallery",area:"Fort Kochi",city:"Kochi",region:"Kerala",lat:9.9658,lng:76.2422,address:"Burger St, near Police Station, Fort Kochi",rating:4.5,hours:["Mon–Sun: 9am–7pm"]},
+  {name:"Durbar Hall Art Gallery",area:"Ernakulam",city:"Kochi",region:"Kerala",lat:9.9852,lng:76.2827,address:"Durbar Hall Road, Ernakulam",rating:4.4,hours:["Mon: Closed","Tue–Sun: 11am–6pm"]},
+  {name:"David Hall Art Café",area:"Fort Kochi",city:"Kochi",region:"Kerala",lat:9.9650,lng:76.2400,address:"St Francis Church Rd, Opposite Parade Ground, Fort Kochi",rating:4.4,hours:["Mon–Sun: 9am–8pm"]},
+  {name:"Aspinwall House",area:"Fort Kochi",city:"Kochi",region:"Kerala",lat:9.9676,lng:76.2400,address:"Fort Kochi waterfront",rating:4.6,hours:["Mon–Sun: 10am–6pm (Biennale season)"]},
+  {name:"Pepper House",area:"Fort Kochi",city:"Kochi",region:"Kerala",lat:9.9670,lng:76.2405,address:"Fort Kochi waterfront",rating:4.5,hours:["Mon–Sun: 10am–6pm"]},
+  {name:"Draavidia Art Gallery",area:"Jew Town",city:"Kochi",region:"Kerala",lat:9.9585,lng:76.2600,address:"Jew Town, Mattancherry",rating:4.3,hours:["Mon–Sat: 10am–6pm","Sun: Closed"]},
+  {name:"Gallery OED",area:"Mattancherry",city:"Kochi",region:"Kerala",lat:9.9580,lng:76.2595,address:"5/600, Bazar Rd, Mattancherry",rating:4.4,hours:["Mon–Sat: 10:30am–6:30pm","Sun: Closed"]},
 ];
 
-const regionColors={Delhi:"#C4622D",Europe:"#2050C0",Americas:"#3A7A20","Asia Pacific":"#A06010","Middle East":"#7040B0",Africa:"#207050"};
-const badgeStyle={Delhi:"background:#FFF0E8;color:#C4622D",Europe:"background:#E8F0FF;color:#2050C0",Americas:"background:#EDFEE8;color:#306020","Asia Pacific":"background:#FFF8E0;color:#906010","Middle East":"background:#F5E8FF;color:#6030A0",Africa:"background:#E8FFF5;color:#20705A"};
+const regionColors={Delhi:"#C4622D",Mumbai:"#2050C0",Bangalore:"#3A7A20",Hyderabad:"#A06010",Chennai:"#7040B0",Kerala:"#207050"};
+const badgeStyle={Delhi:"background:#FFF0E8;color:#C4622D",Mumbai:"background:#E8F0FF;color:#2050C0",Bangalore:"background:#EDFEE8;color:#306020",Hyderabad:"background:#FFF8E0;color:#906010",Chennai:"background:#F5E8FF;color:#6030A0",Kerala:"background:#E8FFF5;color:#20705A"};
 
 // NOTE: real per-gallery photos aren't in the dataset yet, so we fall back to a
 // deterministic placeholder image (seeded by gallery name) until real photo URLs
