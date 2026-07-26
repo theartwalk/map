@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="description" content="Discover art galleries across Delhi NCR, Mumbai, Bangalore, Hyderabad, Chennai and Kerala. Get directions, hours, and open calls with The Art Walk.">
+<meta name="description" content="Discover art galleries across Delhi NCR, Gurgaon, Mumbai, Bangalore, Hyderabad, Chennai and Kerala. Get directions, hours, and open calls with The Art Walk.">
 <meta property="og:title" content="The Art Walk — Art Galleries Across India">
-<meta property="og:description" content="Discover art galleries across Delhi NCR, Mumbai, Bangalore, Hyderabad, Chennai and Kerala.">
+<meta property="og:description" content="Discover art galleries across Delhi NCR, Gurgaon, Mumbai, Bangalore, Hyderabad, Chennai and Kerala.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://map.theartwalk.in/">
 <!-- Placeholder favicon: brand monogram in your palette, until the real logo file is uploaded to the repo (see below) -->
@@ -145,6 +145,7 @@ body{font-family:'DM Sans',sans-serif;color:var(--dark);display:flex;flex-direct
   <button class="fpill" onclick="setFilter('Hyderabad',this)">🕌 Hyderabad</button>
   <button class="fpill" onclick="setFilter('Chennai',this)">🏖️ Chennai</button>
   <button class="fpill" onclick="setFilter('Kerala',this)">🌴 Kerala</button>
+  <button class="fpill" onclick="setFilter('Gurgaon',this)">🏙️ Gurgaon</button>
 </div>
 
 <div class="view-container">
@@ -337,10 +338,14 @@ const galleries=[
   {name:"Pepper House",area:"Fort Kochi",city:"Kochi",region:"Kerala",lat:9.9670,lng:76.2405,address:"Fort Kochi waterfront",rating:4.5,hours:["Mon–Sun: 10am–6pm"]},
   {name:"Draavidia Art Gallery",area:"Jew Town",city:"Kochi",region:"Kerala",lat:9.9585,lng:76.2600,address:"Jew Town, Mattancherry",rating:4.3,hours:["Mon–Sat: 10am–6pm","Sun: Closed"],photo:"https://www.google.com/s2/favicons?domain=draavidiaartgallery.com&sz=128"},
   {name:"Gallery OED",area:"Mattancherry",city:"Kochi",region:"Kerala",lat:9.9580,lng:76.2595,address:"5/600, Bazar Rd, Mattancherry",rating:4.4,hours:["Mon–Sat: 10:30am–6:30pm","Sun: Closed"]},
+  // ══════════════════════════════════
+  // GURGAON
+  // ══════════════════════════════════
+  {name:"Eikowa Contemporary",area:"DLF Phase 1",city:"Gurgaon",region:"Gurgaon",lat:28.4735,lng:77.0994,address:"A 29/5, DLF Phase 1, Gurgaon 122002",rating:4.6,hours:["Mon: Closed","Tue–Sun: 11am–7pm"],photo:"https://www.google.com/s2/favicons?domain=contemporary.eikowa.com&sz=128"},
 ];
 
-const regionColors={Delhi:"#C4622D",Mumbai:"#2050C0",Bangalore:"#3A7A20",Hyderabad:"#A06010",Chennai:"#7040B0",Kerala:"#207050"};
-const badgeStyle={Delhi:"background:#FFF0E8;color:#C4622D",Mumbai:"background:#E8F0FF;color:#2050C0",Bangalore:"background:#EDFEE8;color:#306020",Hyderabad:"background:#FFF8E0;color:#906010",Chennai:"background:#F5E8FF;color:#6030A0",Kerala:"background:#E8FFF5;color:#20705A"};
+const regionColors={Delhi:"#C4622D",Mumbai:"#2050C0",Bangalore:"#3A7A20",Hyderabad:"#A06010",Chennai:"#7040B0",Kerala:"#207050",Gurgaon:"#7A5230"};
+const badgeStyle={Delhi:"background:#FFF0E8;color:#C4622D",Mumbai:"background:#E8F0FF;color:#2050C0",Bangalore:"background:#EDFEE8;color:#306020",Hyderabad:"background:#FFF8E0;color:#906010",Chennai:"background:#F5E8FF;color:#6030A0",Kerala:"background:#E8FFF5;color:#20705A",Gurgaon:"background:#F2E8DF;color:#7A5230"};
 
 /// Most galleries don't have a verified real photo yet. Rather than show a
 // random/incorrect stock photo, we render a clean generic gallery icon
