@@ -145,7 +145,6 @@ body{font-family:'DM Sans',sans-serif;color:var(--dark);display:flex;flex-direct
   <button class="fpill" onclick="setFilter('Hyderabad',this)">🕌 Hyderabad</button>
   <button class="fpill" onclick="setFilter('Chennai',this)">🏖️ Chennai</button>
   <button class="fpill" onclick="setFilter('Kerala',this)">🌴 Kerala</button>
-  <button class="fpill" onclick="setFilter('Gurgaon',this)">🏙️ Gurgaon</button>
 </div>
 
 <div class="view-container">
@@ -222,7 +221,6 @@ const galleries=[
   {name:"Shridharani Gallery",area:"Mandi House",city:"New Delhi",region:"Delhi",lat:28.6271,lng:77.2324,address:"205 Tansen Marg, Triveni Kala Sangam",rating:4.8,hours:["Mon–Sun: 11am–8pm"],photo:"https://cdn.jsdelivr.net/gh/theartwalk/map@main/logos/Shridharani%20Gallery.webp"},
   {name:"Triveni Kala Sangam",area:"Mandi House",city:"New Delhi",region:"Delhi",lat:28.6273,lng:77.2324,address:"205 Tansen Marg, Mandi House",rating:4.6,hours:["Mon–Sun: 11am–8pm"],photo:"https://cdn.jsdelivr.net/gh/theartwalk/map@main/logos/Triveni%20Kala%20Sangam.webp"},
   {name:"Lalit Kala Akademi",area:"Mandi House",city:"New Delhi",region:"Delhi",lat:28.6247,lng:77.2311,address:"35 Firozeshah Rd, Mandi House",rating:4.5,hours:["Mon–Sun: 11am–7pm"],photo:"https://cdn.jsdelivr.net/gh/theartwalk/map@main/logos/Lalit%20Kala%20Akademi%20.png"},
-  {name:"Lalit Kala Akademi – Artists Studios",area:"Garhi",city:"New Delhi",region:"Delhi",lat:28.5617,lng:77.2504,address:"Gari Extension, Garhi, East of Kailash, New Delhi 110065",rating:4.6,hours:["Mon–Sat: 10am–5:30pm","Sun: Closed"]},
   {name:"Gallerie Nvya (Mandi House)",area:"Mandi House",city:"New Delhi",region:"Delhi",lat:28.6273,lng:77.2325,address:"205 Tansen Marg, opp. FICCI Auditorium",rating:4.0,hours:["Mon–Sat: 11am–7pm","Sun: Closed"],photo:"https://cdn.jsdelivr.net/gh/theartwalk/map@main/logos/Gallerie%20Nvya%20%28Mandi%20House%29.png"},
   {name:"Art Pilgrim Gallery",area:"Mandi House",city:"New Delhi",region:"Delhi",lat:28.6272,lng:77.2329,address:"205 Triveni Kala Sangam, Tansen Marg",rating:4.9,hours:["Mon–Sun: 11am–7pm"]},
   {name:"Visual Arts Gallery",area:"Lodi Colony",city:"New Delhi",region:"Delhi",lat:28.5895,lng:77.2248,address:"Lodhi Rd, India Habitat Centre",rating:4.6,hours:["Mon–Sun: 10am–8pm"],photo:"https://cdn.jsdelivr.net/gh/theartwalk/map@main/logos/Visual%20Arts%20Gallery.png"},
@@ -235,7 +233,7 @@ const galleries=[
   {name:"Gallery West End",area:"West End Colony",city:"New Delhi",region:"Delhi",lat:28.5752,lng:77.1639,address:"C-16, West End Colony",rating:4.8,hours:["Mon–Sun: 11am–8pm"],photo:"https://cdn.jsdelivr.net/gh/theartwalk/map@main/logos/Gallery%20West%20End.png"},
   {name:"blueprint12",area:"Anand Niketan",city:"New Delhi",region:"Delhi",lat:28.5793,lng:77.1654,address:"C-66, Anand Niketan, Moti Bagh",rating:4.8,hours:["By appointment"],photo:"https://cdn.jsdelivr.net/gh/theartwalk/map@main/logos/blueprint12%20.png"},
   {name:"Surrendra Paul Art Gallery",area:"Vasant Vihar",city:"New Delhi",region:"Delhi",lat:28.5622,lng:77.1642,address:"11/6, A-12, Block A, Vasant Vihar",rating:4.9,hours:["Mon–Sun: 11am–7pm"],photo:"https://cdn.jsdelivr.net/gh/theartwalk/map@main/logos/Surrendra%20Paul%20Art%20Gallery%20.png"},
-
+  {name:"ArchitArt Gallery",area:"Kirti Nagar",city:"New Delhi",region:"Delhi",lat:28.6453,lng:77.1425,address:"Shop 28, Furniture Block, Kirti Nagar",rating:4.7,hours:["Mon: Closed","Tue–Sat: 11am–8pm","Sun: 11:30am–8pm"],photo:"https://cdn.jsdelivr.net/gh/theartwalk/map@main/logos/ArchitArt%20Gallery.jpeg"},
   {name:"Creativity Art Gallery",area:"Hauz Khas Village",city:"New Delhi",region:"Delhi",lat:28.5546,lng:77.1950,address:"6 Hauz Khas Fort Rd, Hauz Khas Village",rating:4.8,hours:["Mon–Sun: 11am–7pm"],photo:"https://cdn.jsdelivr.net/gh/theartwalk/map@main/logos/Creativity%20Art%20Gallery.jpeg"},
   {name:"Rang Art Gallery",area:"Hauz Khas Village",city:"New Delhi",region:"Delhi",lat:28.5549,lng:77.1943,address:"Ground Floor, Hauz Khas Village",rating:4.8,hours:["Mon–Sun: 11am–8pm"],photo:"https://cdn.jsdelivr.net/gh/theartwalk/map@main/logos/Rang%20Art%20Gallery.jpg"},
   {name:"Lokayata Art Gallery",area:"Hauz Khas Village",city:"New Delhi",region:"Delhi",lat:28.5549,lng:77.1955,address:"No.1 Hauz Khas Village",rating:4.4,hours:["Mon,Wed–Sun: 11am–7pm","Tue: Closed"],photo:"https://cdn.jsdelivr.net/gh/theartwalk/map@main/logos/Lokayata%20Art%20Gallery.png"},
@@ -339,7 +337,6 @@ const galleries=[
   {name:"Pepper House",area:"Fort Kochi",city:"Kochi",region:"Kerala",lat:9.9670,lng:76.2405,address:"Fort Kochi waterfront",rating:4.5,hours:["Mon–Sun: 10am–6pm"]},
   {name:"Draavidia Art Gallery",area:"Jew Town",city:"Kochi",region:"Kerala",lat:9.9585,lng:76.2600,address:"Jew Town, Mattancherry",rating:4.3,hours:["Mon–Sat: 10am–6pm","Sun: Closed"],photo:"https://www.google.com/s2/favicons?domain=draavidiaartgallery.com&sz=128"},
   {name:"Gallery OED",area:"Mattancherry",city:"Kochi",region:"Kerala",lat:9.9580,lng:76.2595,address:"5/600, Bazar Rd, Mattancherry",rating:4.4,hours:["Mon–Sat: 10:30am–6:30pm","Sun: Closed"]},
-  {name:"Eikowa Contemporary",area:"DLF Phase 1",city:"Gurgaon",region:"Gurgaon",lat:28.4730,lng:77.0942,address:"A 29/5, DLF Phase 1, Gurgaon 122002",rating:4.5,hours:["Mon: Closed","Tue–Sun: 11am–7pm"],photo:"https://cdn.jsdelivr.net/gh/theartwalk/map@main/logos/eikowa.svg"},
 ];
 
 const regionColors={Delhi:"#C4622D",Mumbai:"#2050C0",Bangalore:"#3A7A20",Hyderabad:"#A06010",Chennai:"#7040B0",Kerala:"#207050"};
