@@ -8,112 +8,120 @@
 <meta property="og:description" content="Discover art galleries across Delhi NCR, Gurgaon, Mumbai, Bangalore, Hyderabad, Chennai and Kerala.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://map.theartwalk.in/">
-<!-- Placeholder favicon: brand monogram in your palette, until the real logo file is uploaded to the repo (see below) -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><circle cx=%2232%22 cy=%2232%22 r=%2232%22 fill=%22%23F4E8D8%22/><text x=%2232%22 y=%2244%22 font-family=%22Georgia,serif%22 font-weight=%22700%22 font-size=%2236%22 text-anchor=%22middle%22 fill=%22%230A0A0A%22>A</text></svg>">
-<!-- Google tag (gtag.js) -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><circle cx=%2232%22 cy=%2232%22 r=%2232%22 fill=%22%23111%22/><text x=%2232%22 y=%2244%22 font-family=%22Georgia,serif%22 font-weight=%22700%22 font-size=%2236%22 text-anchor=%22middle%22 fill=%22%23fff%22>A</text></svg>">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VW42KRS81Z"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-VW42KRS81Z');
-</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-VW42KRS81Z');</script>
 <title>The Art Walk — Art Galleries Across India</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{--cream:#F4E8D8;--dark:#0A0A0A;--accent:#9C4E22;--muted:#9C8D7A;--card:#fff;--border:#E5D8C6;}
+:root{--white:#FFFFFF;--off:#F5F5F5;--black:#111111;--mid:#888888;--border:#E8E8E8;--card:#fff;}
 html,body{height:100%;width:100%;overflow:hidden;}
-body{font-family:'DM Sans',sans-serif;color:var(--dark);display:flex;flex-direction:column;background:var(--cream);}
-.topbar{background:var(--dark);padding:10px 14px;display:flex;align-items:center;gap:10px;z-index:500;flex-shrink:0;}
-.logo{font-family:'Playfair Display',serif;font-size:18px;color:#fff;white-space:nowrap;}
-.logo span{color:var(--accent);}
-.search-wrap{flex:1;position:relative;}
-.search-wrap input{width:100%;padding:9px 12px 9px 34px;border-radius:10px;border:none;background:rgba(255,255,255,0.12);color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;}
-.search-wrap input::placeholder{color:rgba(255,255,255,0.38);}
-.search-wrap input:focus{background:rgba(255,255,255,0.18);}
-.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;opacity:.5;}
-.loc-btn{width:38px;height:38px;border-radius:10px;border:none;background:rgba(255,255,255,0.12);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s;}
-.loc-btn:active,.loc-btn.active{background:var(--accent);}
-.filters{display:flex;gap:6px;padding:8px 14px;overflow-x:auto;flex-shrink:0;background:var(--dark);scrollbar-width:none;}
-.filters::-webkit-scrollbar{display:none;}
-.fpill{padding:5px 13px;border-radius:20px;border:1px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.55);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0;}
-.fpill.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+body{font-family:'DM Sans',sans-serif;color:var(--black);display:flex;flex-direction:column;background:var(--white);}
 
+/* Topbar */
+.topbar{background:#fff;border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;gap:10px;z-index:500;flex-shrink:0;}
+.logo-stack{line-height:1.1;flex-shrink:0;}
+.logo-stack span{display:block;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;color:var(--black);text-transform:uppercase;}
+.search-wrap{flex:1;position:relative;}
+.search-wrap input{width:100%;padding:9px 14px 9px 36px;border-radius:24px;border:1px solid var(--border);background:var(--off);color:var(--black);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .15s;}
+.search-wrap input::placeholder{color:var(--mid);}
+.search-wrap input:focus{border-color:var(--black);background:#fff;}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--mid);pointer-events:none;}
+.loc-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:#fff;color:var(--black);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;}
+.loc-btn:active,.loc-btn.active{background:var(--black);color:#fff;border-color:var(--black);}
+
+/* Filters */
+.filters{display:flex;gap:6px;padding:10px 14px;overflow-x:auto;flex-shrink:0;background:#fff;border-bottom:1px solid var(--border);scrollbar-width:none;}
+.filters::-webkit-scrollbar{display:none;}
+.fpill{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:#fff;color:var(--black);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0;display:flex;align-items:center;gap:5px;}
+.fpill.active{background:var(--black);border-color:var(--black);color:#fff;}
+.fpill svg path,.fpill svg rect,.fpill svg circle{transition:stroke .2s,fill .2s;}
+
+/* Views */
 .view-container{flex:1;position:relative;min-height:0;isolation:isolate;}
 .view{position:absolute;inset:0;display:none;flex-direction:column;}
 .view.active{display:flex;}
 #map{flex:1;min-height:0;}
 .list-header{padding:14px 16px 8px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.list-title{font-family:'Playfair Display',serif;font-size:16px;}
-.count-pill{background:var(--accent);color:#fff;font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;}
-.nearby-note{font-size:11px;color:var(--muted);padding:0 16px 8px;flex-shrink:0;}
-.glist{flex:1;overflow-y:auto;padding:0 12px 110px;min-height:0;scrollbar-width:none;}
+.list-title{font-size:16px;font-weight:600;letter-spacing:-.3px;}
+.count-pill{background:var(--black);color:#fff;font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;}
+.nearby-note{font-size:11px;color:var(--mid);padding:0 16px 8px;flex-shrink:0;}
+.glist{flex:1;overflow-y:auto;padding:0 12px 120px;min-height:0;scrollbar-width:none;}
 .glist::-webkit-scrollbar{display:none;}
 
+/* Gallery cards */
 .gcard{background:#fff;border:1px solid var(--border);border-radius:14px;padding:10px 14px;margin-bottom:8px;cursor:pointer;transition:border-color .2s;display:flex;align-items:center;gap:12px;}
-.gcard:active,.gcard.active{border-color:var(--accent);}
+.gcard:active,.gcard.active{border-color:var(--black);}
 .gcard-thumb-wrap{position:relative;flex-shrink:0;}
 .gcard-thumb{width:46px;height:46px;border-radius:12px;background-size:contain;background-repeat:no-repeat;background-position:center;background-color:#fff;border:1px solid var(--border);box-sizing:border-box;padding:3px;background-origin:content-box;}
-.gcard-ring-dot{position:absolute;bottom:-2px;right:-2px;width:12px;height:12px;border-radius:50%;border:2px solid #fff;}
+.gcard-ring-dot{position:absolute;bottom:-2px;right:-2px;width:12px;height:12px;border-radius:50%;border:2px solid #fff;background:#111;}
 .gcard-body{flex:1;min-width:0;}
 .gcard-name{font-size:13px;font-weight:500;line-height:1.3;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.gcard-meta{font-size:11px;color:var(--muted);display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
-.dist-badge{font-size:10px;background:#E8F4FF;color:#1860A0;padding:1px 6px;border-radius:8px;font-weight:500;}
+.gcard-meta{font-size:11px;color:var(--mid);display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+.dist-badge{font-size:10px;background:var(--off);color:#555;padding:1px 6px;border-radius:8px;font-weight:500;}
 .pop-badge{font-size:10px;background:#FFF0E0;color:#B0600A;padding:1px 6px;border-radius:8px;font-weight:500;}
 
-.detail{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--card);border-radius:20px 20px 0 0;box-shadow:0 -4px 30px rgba(0,0,0,0.18);z-index:2200;max-height:82vh;overflow-y:auto;}
+/* Detail sheet */
+.detail{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:20px 20px 0 0;box-shadow:0 -2px 24px rgba(0,0,0,0.10);z-index:2200;max-height:85vh;overflow-y:auto;}
 .detail.open{display:block;}
 .detail-handle{padding:10px 0 4px;display:flex;justify-content:center;}
-.detail-photo{width:100%;height:150px;background-size:contain;background-repeat:no-repeat;background-position:center;background-color:#fff;box-sizing:border-box;padding:14px;}
-.detail-inner{padding:14px 18px 28px;position:relative;}
+.detail-handle div{width:36px;height:4px;background:var(--border);border-radius:2px;}
+.detail-photo{width:100%;height:140px;background-size:contain;background-repeat:no-repeat;background-position:center;background-color:var(--off);box-sizing:border-box;padding:14px;}
+.detail-inner{padding:14px 18px 32px;position:relative;}
 .dbadge{font-size:11px;font-weight:500;padding:3px 10px;border-radius:10px;display:inline-block;margin-bottom:8px;}
-.detail-name{font-family:'Playfair Display',serif;font-size:20px;line-height:1.25;margin-bottom:2px;}
-.detail-sub{font-size:13px;color:var(--muted);margin-bottom:4px;}
-.detail-rating{font-size:13px;color:#B07010;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.detail-name{font-size:20px;font-weight:700;line-height:1.2;margin-bottom:3px;}
+.detail-sub{font-size:13px;color:var(--mid);margin-bottom:4px;}
+.detail-rating{font-size:13px;color:var(--mid);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.action-row{display:flex;gap:8px;margin-bottom:16px;}
+.btn-action{flex:1;padding:11px 4px;border-radius:12px;border:1px solid var(--border);background:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;color:var(--black);transition:all .15s;}
+.btn-action:active{background:var(--off);}
+.btn-action.primary{background:var(--black);color:#fff;border-color:var(--black);}
 .detail-row{display:flex;align-items:flex-start;gap:10px;font-size:13px;margin-bottom:6px;}
 .detail-row .ico{font-size:15px;flex-shrink:0;margin-top:1px;}
-.hours-toggle{font-size:12px;color:var(--accent);cursor:pointer;margin:4px 0 6px;display:block;}
-.hours-list{font-size:12px;color:var(--muted);line-height:1.9;display:none;margin-bottom:8px;}
+.hours-toggle{font-size:12px;color:var(--black);cursor:pointer;margin:4px 0 6px;display:block;text-decoration:underline;text-underline-offset:2px;}
+.hours-list{font-size:12px;color:var(--mid);line-height:1.9;display:none;margin-bottom:8px;}
 .hours-list.open{display:block;}
 .mode-strip{display:flex;gap:6px;margin:12px 0 10px;}
-.mmode{flex:1;padding:9px 4px;border-radius:10px;border:1px solid var(--border);background:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;text-align:center;color:var(--muted);transition:all .2s;}
-.mmode.active{background:var(--dark);border-color:var(--dark);color:#fff;}
-.dir-input{width:100%;padding:11px 14px;border-radius:12px;border:1px solid var(--border);background:var(--cream);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;margin-bottom:10px;color:var(--dark);}
-.dir-input:focus{border-color:var(--accent);}
-.btn-dir{width:100%;padding:13px;border-radius:12px;border:none;background:var(--accent);color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
-.btn-close-d{position:absolute;top:12px;right:14px;background:rgba(255,255,255,.85);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;color:var(--dark);z-index:2;}
-.overlay{display:none;position:fixed;inset:0;z-index:2100;background:rgba(0,0,0,.25);}
+.mmode{flex:1;padding:9px 4px;border-radius:10px;border:1px solid var(--border);background:#fff;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;text-align:center;color:var(--mid);transition:all .2s;}
+.mmode.active{background:var(--black);border-color:var(--black);color:#fff;}
+.dir-input{width:100%;padding:11px 14px;border-radius:12px;border:1px solid var(--border);background:var(--off);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;margin-bottom:10px;color:var(--black);}
+.dir-input:focus{border-color:var(--black);}
+.btn-dir{width:100%;padding:13px;border-radius:12px;border:none;background:var(--black);color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-close-d{position:absolute;top:12px;right:14px;background:var(--off);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;color:var(--black);z-index:2;display:flex;align-items:center;justify-content:center;}
+.overlay{display:none;position:fixed;inset:0;z-index:2100;background:rgba(0,0,0,.2);}
 .overlay.open{display:block;}
 
-.fab-loc{position:fixed;right:14px;bottom:158px;z-index:2000;width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.13);border:none;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;transition:background .15s;}
-.fab-loc:active{background:#fff3ee;}
+/* FAB */
+.fab-loc{position:fixed;right:14px;bottom:178px;z-index:2000;width:44px;height:44px;border-radius:50%;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,0.13);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;color:var(--black);}
+.fab-loc:active{background:var(--off);}
 
-.highlight-card{position:fixed;left:12px;right:12px;bottom:78px;z-index:2010;background:#fff;border-radius:16px;padding:8px;display:flex;align-items:center;gap:10px;box-shadow:0 6px 20px rgba(0,0,0,.18);cursor:pointer;}
-.hc-photo{width:44px;height:44px;border-radius:12px;background-size:contain;background-repeat:no-repeat;background-position:center;background-color:#fff;flex-shrink:0;border:2px solid var(--cream);box-sizing:border-box;padding:3px;background-origin:content-box;}
+/* Highlight card */
+.highlight-card{position:fixed;left:12px;right:12px;bottom:96px;z-index:2010;background:#fff;border-radius:16px;padding:10px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,0.10);cursor:pointer;border:1px solid var(--border);}
+.hc-photo{width:48px;height:48px;border-radius:12px;background-size:contain;background-repeat:no-repeat;background-position:center;background-color:var(--off);flex-shrink:0;border:1px solid var(--border);box-sizing:border-box;padding:4px;background-origin:content-box;}
 .hc-body{flex:1;min-width:0;}
-.hc-title{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.hc-sub{font-size:11px;color:var(--muted);}
-.hc-chev{font-size:20px;color:var(--muted);flex-shrink:0;}
+.hc-title{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hc-sub{font-size:11px;color:var(--mid);margin-top:2px;}
+.hc-chev{color:var(--mid);flex-shrink:0;}
 
-.bottom-nav{position:fixed;left:12px;right:12px;bottom:12px;z-index:2020;background:var(--dark);border-radius:20px;display:flex;padding:6px;box-shadow:0 6px 24px rgba(0,0,0,.25);}
-.nav-btn{flex:1;background:none;border:none;color:rgba(255,255,255,.55);display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:10px;cursor:pointer;transition:all .2s;}
-.nav-btn .nav-ico{font-size:17px;}
-.nav-btn.active{background:var(--accent);color:#fff;}
+/* Bottom nav */
+.bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:2020;background:#fff;border-top:1px solid var(--border);display:flex;padding:6px 8px 8px;}
+.nav-btn{flex:1;background:none;border:none;color:var(--mid);display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;cursor:pointer;transition:color .2s;}
+.nav-btn.active{color:var(--black);}
 
-.loading{position:fixed;inset:0;background:var(--dark);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s;}
+/* Loading */
+.loading{position:fixed;inset:0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s;}
 .loading.done{opacity:0;pointer-events:none;}
-.loading-the{font-family:'Playfair Display',serif;font-size:20px;font-style:italic;color:rgba(255,255,255,.85);line-height:1;}
-.loading-logo{font-family:'Playfair Display',serif;font-weight:700;font-size:46px;color:#fff;line-height:1.02;text-align:center;margin-bottom:10px;}
-.loading-rule{width:130px;height:1px;background:rgba(255,255,255,.5);margin:2px 0 10px;}
-.loading-tagline{font-size:10px;letter-spacing:1.5px;color:rgba(255,255,255,.6);text-transform:uppercase;margin-bottom:20px;}
-.loading-tagline b{color:var(--accent);font-weight:500;}
-.loading-sub{font-size:13px;color:rgba(255,255,255,.4);margin-bottom:30px;}
-.spinner{width:28px;height:28px;border:3px solid rgba(255,255,255,.15);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;}
+.loading-the{font-size:10px;letter-spacing:3px;color:var(--mid);text-transform:uppercase;}
+.loading-logo{font-weight:700;font-size:44px;color:var(--black);line-height:1;text-align:center;margin:6px 0 10px;letter-spacing:-1px;}
+.loading-rule{width:80px;height:1px;background:var(--border);margin:0 0 10px;}
+.loading-tagline{font-size:10px;letter-spacing:1.5px;color:var(--mid);text-transform:uppercase;margin-bottom:28px;}
+.loading-sub{font-size:13px;color:var(--mid);margin-bottom:28px;}
+.spinner{width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--black);border-radius:50%;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.no-results{text-align:center;padding:40px 20px;color:var(--muted);}
+.no-results{text-align:center;padding:40px 20px;color:var(--mid);}
 .no-results .big{font-size:36px;margin-bottom:8px;}
 .user-pulse{width:16px;height:16px;background:#3B82F6;border:3px solid #fff;border-radius:50%;box-shadow:0 0 0 6px rgba(59,130,246,.2);}
 </style>
@@ -122,30 +130,60 @@ body{font-family:'DM Sans',sans-serif;color:var(--dark);display:flex;flex-direct
 
 <div class="loading" id="loading">
   <div class="loading-the">The</div>
-  <div class="loading-logo">Art<br>Walk</div>
+  <div class="loading-logo">Art Walk</div>
   <div class="loading-rule"></div>
-  <div class="loading-tagline">Art Galleries <b>&bull;</b> Exhibitions <b>&bull;</b> Open Calls</div>
+  <div class="loading-tagline">Art Galleries &bull; Exhibitions &bull; Open Calls</div>
   <div class="loading-sub">Finding galleries near you…</div>
   <div class="spinner"></div>
 </div>
 
 <div class="topbar">
-  <div class="logo">The Art <span>Walk</span></div>
+  <div class="logo-stack">
+    <span>THE</span><span>ART</span><span>WALK</span>
+  </div>
   <div class="search-wrap">
-    <span class="search-icon">🔍</span>
+    <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
     <input type="text" id="searchInput" placeholder="Search galleries, areas…" oninput="filterGalleries()">
   </div>
-  <button class="loc-btn" id="locBtn" onclick="goToMyLocation()">📍</button>
+  <button class="loc-btn" id="locBtn" onclick="goToMyLocation()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+      <circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/>
+    </svg>
+  </button>
 </div>
+
 <div class="filters">
   <button class="fpill active" onclick="setFilter('all',this)">All</button>
-  <button class="fpill" onclick="setFilter('Delhi',this)">🎨 Delhi</button>
-  <button class="fpill" onclick="setFilter('Mumbai',this)">🌊 Mumbai</button>
-  <button class="fpill" onclick="setFilter('Bangalore',this)">🌳 Bangalore</button>
-  <button class="fpill" onclick="setFilter('Hyderabad',this)">🕌 Hyderabad</button>
-  <button class="fpill" onclick="setFilter('Chennai',this)">🏖️ Chennai</button>
-  <button class="fpill" onclick="setFilter('Kerala',this)">🌴 Kerala</button>
-  <button class="fpill" onclick="setFilter('Gurgaon',this)">🏙️ Gurgaon</button>
+  <button class="fpill" onclick="setFilter('Delhi',this)">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>
+    Delhi
+  </button>
+  <button class="fpill" onclick="setFilter('Mumbai',this)">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22V12m0 0C12 7 7 4 2 6m10 6c0-5 5-8 10-6"/></svg>
+    Mumbai
+  </button>
+  <button class="fpill" onclick="setFilter('Bangalore',this)">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></svg>
+    Bangalore
+  </button>
+  <button class="fpill" onclick="setFilter('Hyderabad',this)">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 19h20L12 2zm0 0v11"/></svg>
+    Hyderabad
+  </button>
+  <button class="fpill" onclick="setFilter('Chennai',this)">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 20h20M4 20V9l8-7 8 7v11"/></svg>
+    Chennai
+  </button>
+  <button class="fpill" onclick="setFilter('Kerala',this)">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22c0 0-8-6-8-13a8 8 0 1 1 16 0c0 7-8 13-8 13z"/></svg>
+    Kerala
+  </button>
+  <button class="fpill" onclick="setFilter('Gurgaon',this)">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="1"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+    Gurgaon
+  </button>
 </div>
 
 <div class="view-container">
@@ -162,7 +200,11 @@ body{font-family:'DM Sans',sans-serif;color:var(--dark);display:flex;flex-direct
   </div>
 </div>
 
-<button class="fab-loc" id="fabLoc" onclick="goToMyLocation()">📍</button>
+<button class="fab-loc" id="fabLoc" onclick="goToMyLocation()">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+    <circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/>
+  </svg>
+</button>
 
 <div class="highlight-card" id="highlightCard" onclick="onHighlightTap()">
   <div class="hc-photo" id="hcPhoto"></div>
@@ -170,36 +212,64 @@ body{font-family:'DM Sans',sans-serif;color:var(--dark);display:flex;flex-direct
     <div class="hc-title" id="hcTitle">Loading galleries…</div>
     <div class="hc-sub" id="hcSub"></div>
   </div>
-  <div class="hc-chev">›</div>
+  <svg class="hc-chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg>
 </div>
 
 <div class="bottom-nav">
-  <button class="nav-btn active" id="navMap" onclick="switchView('map')"><span class="nav-ico">🗺️</span><span>Map</span></button>
-  <button class="nav-btn" id="navList" onclick="switchView('list')"><span class="nav-ico">📋</span><span>List</span></button>
-  <button class="nav-btn" onclick="openExternal('whatsapp')"><span class="nav-ico"><svg viewBox="0 0 32 32" width="17" height="17" fill="#25D366"><path d="M16.04 3C9.37 3 3.96 8.4 3.96 15.06c0 2.23.6 4.32 1.65 6.12L3 29l7.99-2.56a12.05 12.05 0 0 0 5.05 1.11h.01c6.67 0 12.08-5.4 12.08-12.06C28.13 8.83 22.71 3 16.04 3zm0 21.88h-.01a10 10 0 0 1-5.1-1.4l-.36-.21-4.74 1.52 1.55-4.61-.24-.38a9.92 9.92 0 0 1-1.53-5.24c0-5.5 4.47-9.98 9.98-9.98 2.67 0 5.17 1.04 7.06 2.93a9.9 9.9 0 0 1 2.93 7.05c0 5.5-4.48 9.98-9.99 9.98h.05z"/><path d="M21.24 17.7c-.29-.15-1.7-.84-1.96-.93-.26-.1-.46-.15-.65.14-.19.29-.75.93-.92 1.12-.17.19-.34.22-.63.07-.29-.15-1.24-.46-2.36-1.46-.87-.78-1.46-1.74-1.63-2.03-.17-.29-.02-.45.13-.6.13-.13.29-.34.44-.51.15-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.15-.65-1.57-.9-2.15-.24-.57-.48-.5-.65-.5-.17 0-.36-.01-.55-.01-.19 0-.51.07-.77.36-.26.29-1 .98-1 2.39s1.03 2.77 1.17 2.96c.14.19 2.02 3.09 4.9 4.33.68.3 1.22.47 1.63.6.68.22 1.31.19 1.8.11.55-.08 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34z"/></svg></span><span>Community</span></button>
-  <button class="nav-btn" onclick="openExternal('instagram')"><span class="nav-ico">📸</span><span>Instagram</span></button>
+  <button class="nav-btn active" id="navMap" onclick="switchView('map')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+    <span>Map</span>
+  </button>
+  <button class="nav-btn" id="navList" onclick="switchView('list')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3" cy="6" r="1" fill="currentColor"/><circle cx="3" cy="12" r="1" fill="currentColor"/><circle cx="3" cy="18" r="1" fill="currentColor"/></svg>
+    <span>List</span>
+  </button>
+  <button class="nav-btn" onclick="openExternal('whatsapp')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    <span>Community</span>
+  </button>
+  <button class="nav-btn" onclick="openExternal('instagram')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+    <span>Instagram</span>
+  </button>
 </div>
 
 <div class="overlay" id="overlay" onclick="closeDetail()"></div>
 <div class="detail" id="detailSheet">
-  <div class="detail-handle"><div class="handle"></div></div>
+  <div class="detail-handle"><div></div></div>
   <div class="detail-photo" id="dPhoto"></div>
   <div class="detail-inner">
-    <button class="btn-close-d" onclick="closeDetail()">✕</button>
+    <button class="btn-close-d" onclick="closeDetail()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
     <div class="dbadge" id="dRegion"></div>
     <div class="detail-name" id="dName"></div>
     <div class="detail-sub" id="dSub"></div>
     <div class="detail-rating"><span id="dRating"></span><span class="pop-badge" id="dPopBadge" style="display:none;">🔥 Popular</span></div>
+    <div class="action-row">
+      <button class="btn-action primary" onclick="getDirections()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        Directions
+      </button>
+      <button class="btn-action" onclick="callGallery()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.36h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Call
+      </button>
+      <button class="btn-action" onclick="shareGallery()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        Share
+      </button>
+    </div>
     <div class="detail-row"><span class="ico">📍</span><span id="dAddress"></span></div>
-    <span class="hours-toggle" onclick="toggleHours()">🕐 Show opening hours</span>
+    <span class="hours-toggle" onclick="toggleHours()">Show opening hours</span>
     <div class="hours-list" id="dHours"></div>
     <div class="mode-strip">
       <button class="mmode active" onclick="setMode('driving',this)">🚗 Drive</button>
       <button class="mmode" onclick="setMode('walking',this)">🚶 Walk</button>
       <button class="mmode" onclick="setMode('cycling',this)">🚴 Cycle</button>
     </div>
-    <input class="dir-input" id="fromInput" placeholder="Your location (tap 📍 for GPS)">
-    <button class="btn-dir" onclick="getDirections()">🧭 Get directions</button>
+    <input class="dir-input" id="fromInput" placeholder="Your location (tap locate for GPS)">
+    <button class="btn-dir" onclick="getDirections()">Get directions →</button>
   </div>
 </div>
 
@@ -360,6 +430,7 @@ function photoUrl(g){
   return g.photo || genericIcon(g.region);
 }
 
+
 let map,markers=[],userMarker=null,routeLine=null,travelMode="driving",activeFilter="all",activeIdx=null;
 let userLat=null,userLng=null,currentList=galleries,currentView="map",highlightIdx=null;
 
@@ -377,7 +448,7 @@ function initMap(){
   map=L.map("map",{zoomControl:false}).setView([28.57,77.21],12);
   L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{attribution:'© OpenStreetMap © Carto',maxZoom:19}).addTo(map);
   galleries.forEach((g,i)=>{
-    const m=L.marker([g.lat,g.lng],{icon:makeIcon(g.region,false,photoUrl(g))}).addTo(map);
+    const m=L.marker([g.lat,g.lng],{icon:makeIcon(g.region,false,photoUrl(g),g.name)}).addTo(map);
     m.on("click",()=>openDetail(i));
     markers.push(m);
   });
@@ -385,9 +456,23 @@ function initMap(){
   getUserLocation(true);
 }
 
-function makeIcon(region,big,photo){
-  const c=regionColors[region]||"#888",s=big?58:44,r=big?16:12,p=big?7:5;
-  return L.divIcon({className:"",html:`<div style="width:${s}px;height:${s}px;border-radius:${r}px;background-color:#fff;background-image:url('${photo}');background-repeat:no-repeat;background-position:center;background-size:contain;box-sizing:border-box;padding:${p}px;background-origin:content-box;border:${big?3:2.5}px solid ${c};box-shadow:0 3px 10px rgba(0,0,0,.35);"></div>`,iconSize:[s,s],iconAnchor:[s/2,s/2]});
+function makeIcon(region,active,photo,name){
+  const label=name&&name.length>16?name.substring(0,15)+'…':name||'';
+  const hasPh=photo&&!photo.startsWith('data:');
+  let inner;
+  if(hasPh){
+    inner=`<img src="${photo}" onerror="this.src=''" style="width:22px;height:22px;border-radius:5px;object-fit:contain;flex-shrink:0;background:#f5f5f5"><span style="font-size:11px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:90px;">${label}</span>`;
+  } else {
+    inner=`<span style="font-size:11px;font-weight:500;">${label}</span>`;
+  }
+  const bg=active?'#111':'#fff';
+  const col=active?'#fff':'#111';
+  const br=active?'1.5px solid #111':'1.5px solid rgba(0,0,0,0.12)';
+  const html=`<div style="background:${bg};color:${col};border:${br};border-radius:20px;box-shadow:0 2px 8px rgba(0,0,0,0.13);padding:4px 8px;display:flex;align-items:center;gap:5px;cursor:pointer;max-width:140px;position:relative;">
+    ${inner}
+    <div style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid ${active?'#111':'#fff'};"></div>
+  </div>`;
+  return L.divIcon({className:'',html,iconSize:null,iconAnchor:null});
 }
 
 function getUserLocation(onLoad){
@@ -435,6 +520,13 @@ function switchView(v){
   if(v==="map")setTimeout(()=>map.invalidateSize(),80);
 }
 
+function callGallery(){alert("Phone number not available for this gallery yet.");}
+function shareGallery(){
+  const g=galleries[activeIdx];if(!g)return;
+  const url=`https://map.theartwalk.in/#${encodeURIComponent(g.name)}`;
+  if(navigator.share){navigator.share({title:g.name,text:g.address,url});}
+  else{navigator.clipboard.writeText(url).then(()=>alert("Link copied!"));}
+}
 function openExternal(kind){
   const urls={
     instagram:"https://www.instagram.com/theartwalk.in/",
@@ -520,8 +612,8 @@ function openDetail(i){
   hoursEl.innerHTML=g.hours&&g.hours.length?g.hours.join("<br>"):"Hours not available";
   hoursEl.classList.remove("open");
   document.querySelector(".hours-toggle").textContent="🕐 Show opening hours";
-  markers.forEach((m,idx)=>m.setIcon(makeIcon(galleries[idx].region,false,photoUrl(galleries[idx]))));
-  markers[i].setIcon(makeIcon(g.region,true,photoUrl(g)));
+  markers.forEach((m,idx)=>m.setIcon(makeIcon(galleries[idx].region,false,photoUrl(galleries[idx]),galleries[idx].name)));
+  markers[i].setIcon(makeIcon(g.region,true,photoUrl(g),g.name));
   map.flyTo([g.lat,g.lng],16,{duration:1});
   document.getElementById("detailSheet").classList.add("open");
   document.getElementById("overlay").classList.add("open");
@@ -537,7 +629,7 @@ function toggleHours(){
 function closeDetail(){
   document.getElementById("detailSheet").classList.remove("open");
   document.getElementById("overlay").classList.remove("open");
-  if(activeIdx!==null)markers[activeIdx].setIcon(makeIcon(galleries[activeIdx].region,false,photoUrl(galleries[activeIdx])));
+  if(activeIdx!==null)markers[activeIdx].setIcon(makeIcon(galleries[activeIdx].region,false,photoUrl(galleries[activeIdx]),galleries[activeIdx].name));
   activeIdx=null;
   if(routeLine){map.removeLayer(routeLine);routeLine=null;}
 }
@@ -595,6 +687,7 @@ function filterGalleries(){
 }
 
 initMap();
+
 </script>
 </body>
 </html>
