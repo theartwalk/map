@@ -444,7 +444,7 @@ function fmtDist(km){
 
 function initMap(){
   map=L.map("map",{zoomControl:false}).setView([28.57,77.21],12);
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",{attribution:'© OpenStreetMap © Carto',maxZoom:19}).addTo(map);
+  L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",{attribution:'© Esri © OpenStreetMap',maxZoom:16}).addTo(map);
   galleries.forEach((g,i)=>{
     const m=L.marker([g.lat,g.lng],{icon:makeIcon(g.region,false,photoUrl(g),g.name)}).addTo(map);
     m.on("click",()=>openDetail(i));
